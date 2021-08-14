@@ -1,0 +1,110 @@
+--------SQL para las tablas-----------------------
+
+CREATE TABLE DISPOSITIVO_INDIVIDUAL 
+(
+  ID_DISPOSITIVO INT NOT NULL 
+, NUMERO_SERIE VARCHAR2(50) 
+, CONSTRAINT DISPOSTIVO_INDIVIDUAL_PK PRIMARY KEY 
+  (
+    ID_DISPOSITIVO 
+  )
+  ENABLE 
+);
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+  CREATE TABLE "VENTAS"."BODEGA" 
+   (	"ID_BODEGA" NUMBER(*,0) NOT NULL ENABLE, 
+	"EXISTENCIA" NUMBER(*,0), 
+	"PRECIO_LISTA" FLOAT(126), 
+	"CODIGO_MODELO" VARCHAR2(100 BYTE), 
+	"RAM" NUMBER(*,0), 
+	"ALMACENAMIENTO" NUMBER(*,0), 
+	"PROCESADOR" VARCHAR2(100 BYTE), 
+	"NUMERO_CORES" NUMBER(*,0), 
+	"COLOR" VARCHAR2(100 BYTE), 
+	"DESCRIPCION" VARCHAR2(20 BYTE), 
+	"FOTO1" BLOB, 
+	"FOTO2" BLOB, 
+	"FOTO3" BLOB, 
+	 CONSTRAINT "BODEGA_PK" PRIMARY KEY ("ID_BODEGA")
+  USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
+  TABLESPACE "USERS"  ENABLE
+   ) SEGMENT CREATION DEFERRED 
+  PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 
+ NOCOMPRESS LOGGING
+  TABLESPACE "USERS" 
+ LOB ("FOTO1") STORE AS SECUREFILE (
+  TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192
+  NOCACHE LOGGING  NOCOMPRESS  KEEP_DUPLICATES ) 
+ LOB ("FOTO2") STORE AS SECUREFILE (
+  TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192
+  NOCACHE LOGGING  NOCOMPRESS  KEEP_DUPLICATES ) 
+ LOB ("FOTO3") STORE AS SECUREFILE (
+  TABLESPACE "USERS" ENABLE STORAGE IN ROW CHUNK 8192
+  NOCACHE LOGGING  NOCOMPRESS  KEEP_DUPLICATES ) ;
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE TABLE BODEGAXMARCA 
+(
+  ID_BOMA INT NOT NULL 
+, ID_BODEGA INT 
+, ID_MARCA INT 
+, MARCA VARCHAR2(100) 
+, CONSTRAINT BODEGAXMARCA_PK PRIMARY KEY 
+  (
+    ID_BOMA 
+  )
+  ENABLE 
+);
+
+ALTER TABLE BODEGAXMARCA
+ADD CONSTRAINT BODEGAXMARCA_FK1 FOREIGN KEY
+(
+  ID_BODEGA 
+)
+REFERENCES BODEGA
+(
+  ID_BODEGA 
+)
+ENABLE;
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
+CREATE TABLE DISPOSITIVOXBODEGA 
+(
+  ID_DISXBODEGA INT NOT NULL 
+, ID_DISPOSITIVO INT 
+, ID_BODEGA INT 
+, CONSTRAINT DISPOSITIVOXBODEGA_PK PRIMARY KEY 
+  (
+    ID_DISXBODEGA 
+  )
+  ENABLE 
+);
+ALTER TABLE DISPOSITIVOXBODEGA
+ADD CONSTRAINT DISPOSITIVOXBODEGA_FK1 FOREIGN KEY
+(
+  ID_BODEGA 
+)
+REFERENCES BODEGA
+(
+  ID_BODEGA 
+)
+ENABLE;
+
+ALTER TABLE DISPOSITIVOXBODEGA
+ADD CONSTRAINT DISPOSITIVOXBODEGA_FK2 FOREIGN KEY
+(
+  ID_DISPOSITIVO 
+)
+REFERENCES DISPOSTIVO_INDIVIDUAL
+(
+  ID_DISPOSITIVO 
+)
+ENABLE;
+
+
+
+
+
