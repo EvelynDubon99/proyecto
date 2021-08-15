@@ -21,14 +21,7 @@ pipeline{
                              script{
                              
                                 withSonarQubeEnv('sonarq') {
-                                      sh 'mvn  sonar:sonar'
-                                }
-                                timeout(time: 1, unit: 'HOURS'){
-                                   def qg= waitforQualityGate()
-                                   if(qg.status != 'OK'){
-                                     error "Pipeline aborted : $(qg.status)"
-                                   }
-                                   sh 'mvn clean install'
+                                      sh 'mvn clean package sonar:sonar'
                                 }
                                
                              }
