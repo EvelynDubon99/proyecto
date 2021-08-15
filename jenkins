@@ -1,19 +1,20 @@
 pipeline{
-    agent any
-        tools { 
-                maven 'MAVEN_HOME'
-            }
-        stages {
-            stage('Repo') {
-                steps {
-
-                     git 'https://github.com/EvelynDubon99/proyecto'
+        agent any
+            tools { 
+                    maven 'MAVEN_HOME'
                 }
-            }
-            stage('Compile') {
-                steps {
-                        sh 'mvn package'
-                }
+            stages {
+                stage('Repo') {
+                    steps {
 
+                         git 'https://github.com/EvelynDubon99/proyecto'
+                    }
+                }
+                stage('Compile') {
+                    steps {
+                            sh 'mvn package'
+                    }
+
+        }
     }
 }
