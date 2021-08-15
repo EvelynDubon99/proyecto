@@ -3,8 +3,8 @@ node{
       
       git 'https://github.com/EvelynDubon99/proyecto'
    }
-   stage('Compile-Package'){
-    def mvnHome = tool name: 'MAVEN_HOME', type: 'maven'
-      sh "${mvnHome/mvn package}"
+   withMaven {
+      sh "mvn package"
+    }
    }
 }
