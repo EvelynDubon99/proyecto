@@ -16,6 +16,17 @@ pipeline{
                     }
 
                 }
+                stage('Sonarqube'){
+                        steps {
+                              withSonarQubeEnv('My SonarQube Server') {
+
+                                    withMaven(maven:'Maven 3.5') {
+                                        sh 'mvn clean package sonar:sonar'
+                                    }
+                                }
+                            }
+                }
+                
                 stage('correo') {
                     steps {
 
