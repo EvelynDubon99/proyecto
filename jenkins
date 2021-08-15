@@ -4,13 +4,13 @@ pipeline{
                     maven 'MAVEN_HOME'
                 }
             stages {
-                stage('Repo') {
+                stage('conexion') {
                     steps {
 
                          git 'https://github.com/EvelynDubon99/proyecto'
                     }
                 }
-                stage('Compile') {
+                stage('Build') {
                     steps {
                             sh 'mvn package'
                     }
