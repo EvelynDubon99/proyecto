@@ -21,7 +21,7 @@ pipeline{
                              script{
                              
                                 withSonarQubeEnv('sonarq') {
-                                      sh 'mvn clean verify sonar:sonar -Dsonar.login=3f94c9eae851f6f9951023fb5bb9c445513db527'
+                                      sh 'mvn clean verify sonar:sonar -Dsonar.password= -Dsonar.login=3f94c9eae851f6f9951023fb5bb9c445513db527'
                                 }
                                
                              }
