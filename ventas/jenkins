@@ -1,5 +1,0 @@
-node{
-  stage('SCM Checkout'){
-      git 'https://github.com/EvelynDubon99/proyecto'
-   }
-}
