@@ -5,6 +5,6 @@ node{
    }
    withMaven {
       sh "mvn package"
-    }
+    
    }
 }
