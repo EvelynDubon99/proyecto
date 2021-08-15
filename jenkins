@@ -1,10 +1,18 @@
 node{
-  stage('SCM Checkout'){
-      
-      git 'https://github.com/EvelynDubon99/proyecto'
-   }
-   withMaven {
-      sh "mvn package"
-    
-   }
+  stage ('Build') {
+
+    git url: 'https://github.com/EvelynDubon99/proyecto'
+
+    withMaven(
+       
+        maven: 'MAVEN_HOME', 
+        mavenLocalRepo: '.repository', 
+        mavenSettingsConfig: 'my-maven-settings' 
+    ) {
+
+      // Run the maven build
+      sh "mvn clean package"
+
+    } 
+  }
 }
