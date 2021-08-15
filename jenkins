@@ -16,9 +16,9 @@ pipeline{
                     }
 
                 }
-                
-               }
-         stage('Correo'){
+                 stage('Correo'){
                 mail bcc: '', body: 'Test ', cc: '', from: '', replyTo: '', subject: 'Test', to: 'evelyndubon@gmail.com'
-          }
+                }
+                
+             }
 }
