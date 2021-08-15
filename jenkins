@@ -1,18 +1,18 @@
-node{
-  stage ('Build') {
+pipeline{
+agent any
+    tools { 
+            maven 'MAVEN_HOME'
+        }
+    stages {
+        stage('Repo') {
+            steps {
 
-    git url: 'https://github.com/EvelynDubon99/proyecto'
-
-    withMaven(
-       
-        maven: 'MAVEN_HOME', 
-        mavenLocalRepo: '.repository', 
-        mavenSettingsConfig: 'my-maven-settings' 
-    ) {
-
-      // Run the maven build
-      sh "mvn clean package"
-
-    } 
-  }
+                 git 'https://github.com/EvelynDubon99/proyecto'
+            }
+        }
+        stage('Compile') {
+            steps {
+                    sh 'mvn package'
+            }
+  
 }
