@@ -20,8 +20,15 @@ pipeline{
                         steps {
                              script{
                              
-                                withSonarQubeEnv('sonarserver') {
+                                withSonarQubeEnv('sonarq') {
                                       sh 'mvn  sonar:sonar'
+                                }
+                                timeout(time: 1, unit: 'HOURS'){
+                                   def qg= waitforQualityGate()
+                                   if(qg.status != 'OK'){
+                                     error "Pipeline aborted : $(qg.status)"
+                                   }
+                                   sh 'mvn clean install'
                                 }
                                
                              }
