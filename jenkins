@@ -47,7 +47,7 @@ pipeline{
                     }
                 }
                 stage("Docker"){
-                        sterps{
+                        steps{
                         docker.build("docker2")
                         }
                 }
