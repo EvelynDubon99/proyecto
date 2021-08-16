@@ -27,6 +27,12 @@ pipeline{
                                     def qg = waitForQualityGate()
                                    if (qg.status != 'OK') {
                                           error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                                          
+                                           post{
+                                                always{
+                                                        mail bcc: '', body: 'Error ', cc: '', from: '', replyTo: '', subject: 'The test are feild', to: 'evelyndubon@gmail.com'
+                                                }
+                                        }
                                      }
                                   }  
                                 
@@ -37,21 +43,7 @@ pipeline{
                 }
                  
                 
-                stage('correo') {
-                    steps {
 
-                        echo "Done"
-                    }
-                }
-                
-                
-               
-             }
              
-              post{
-                        always{
-                                mail bcc: '', body: 'Test ', cc: '', from: '', replyTo: '', subject: 'Test', to: 'evelyndubon@gmail.com'
-                        }
-                }
                 
 }
