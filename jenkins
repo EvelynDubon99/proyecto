@@ -27,17 +27,17 @@ pipeline{
                              }
                               
                             }
-                 stage("Quality Gate"){
+                 stage("Correo"){
                 steps {
                     script {
                         timeout(time: 1, unit: 'HOURS') {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
                                mail bcc: '',
-                               body: 'El pipeline a fallado revisa el codigo', cc: '', 
+                               body: 'Revisar codigo algo fallo', cc: '', 
                                from: '', replyTo: '',
-                               subject: 'Jenkins pipeline no ha tenido exito, revisar el codigo nuevamente antes de hacer el merge', 
-                               to: 'castaneda161618@unis.edu.gt'
+                               subject: 'No se puede hacer el merge', 
+                               to: 'dubon181014@unis.edu.gt'
                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
                         }
                     }
