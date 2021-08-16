@@ -27,6 +27,7 @@ pipeline{
                              }
                               
                             }
+                            
                  stage("Correo"){
                 steps {
                     script {
@@ -43,6 +44,13 @@ pipeline{
                             }
                         }
                     }
+                }
+                stage('Docker'){
+                     step{
+                     
+                        sh 'docker build -f Dockerfile -t docker/version:0.0.1 .'
+                     }
+                
                 }
 
                  
