@@ -29,8 +29,7 @@ pipeline{
                                          mail bcc: '', body: 'Error ', cc: '', from: '', replyTo: '', subject: 'The test are feild', to: 'evelyndubon@gmail.com'
                                           
                                            
-                                                        
-
+                                          }
                                      }
                                   }  
                                 
