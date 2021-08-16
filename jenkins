@@ -27,6 +27,7 @@ pipeline{
                                     def qg = waitForQualityGate()
                                    if (qg.status != 'OK') {
                                          mail bcc: '', body: 'Error ', cc: '', from: '', replyTo: '', subject: 'The test are feild', to: 'evelyndubon@gmail.com'
+                                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
                                           
                                            
                                           }
