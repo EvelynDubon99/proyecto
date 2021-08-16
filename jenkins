@@ -46,12 +46,10 @@ pipeline{
                         }
                     }
                 }
-                stage('Docker'){
-                     steps{
-                     
-                        sh 'docker build -f Dockerfile -t docker/version:0.0.1 .'
-                     }
-                
+                stage("Docker"){
+                        sterps{
+                        docker.build("docker2")
+                        }
                 }
 
                  
