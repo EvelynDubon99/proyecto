@@ -2,7 +2,7 @@ pipeline{
         agent any
             tools { 
                     maven 'MAVEN_HOME'
-                    docker 'DOCKER'
+                    
                 }
             stages {
                 stage('conexion') {
@@ -47,7 +47,7 @@ pipeline{
                     }
                 }
                 stage('Docker'){
-                     step{
+                     steps{
                      
                         sh 'docker build -f Dockerfile -t docker/version:0.0.1 .'
                      }
