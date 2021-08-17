@@ -53,7 +53,7 @@ pipeline{
                         steps {
                              
                                 
-                               sh 'docker build -f Dokerfile -t docker2'                 
+                               sh 'docker build -f Dokerfile -t docker .'                 
                                 
                              }
                               
