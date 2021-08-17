@@ -21,7 +21,15 @@ pipeline{
                 stage('unit test') {
                     steps {
                                 script{
-                                     junit  keepLongStdio: true, testResults: 'proyecto/target/surefire-reports/*.xml'
+                                     
+                                    junit testResults: 'proyecto/target/surefire-reports/*.xml'
+                                     if(testResult != 'Failed'){
+                                        mail bcc: '',
+                                       body: 'Revisar codigo algo fallo', cc: '', 
+                                       from: '', replyTo: '',
+                                       subject: 'No se puede hacer el merge', 
+                                       to: 'dubon181014@unis.edu.gt'
+                                     }
                                 
                                 }
                             
