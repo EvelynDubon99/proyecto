@@ -12,12 +12,12 @@ pipeline{
                          git 'https://github.com/EvelynDubon99/proyecto'
                     }
                 }
-                stage('Build') {
+                /*stage('Build') {
                     steps {
                             sh 'mvn package'
                     }
 
-                }
+                }*/
                 stage('unit test') {
                     steps {
                             sh 'mvn test'
