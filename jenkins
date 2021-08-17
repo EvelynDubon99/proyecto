@@ -12,30 +12,13 @@ pipeline{
                          git 'https://github.com/EvelynDubon99/proyecto'
                     }
                 }
-                /*stage('Build') {
+                stage('Build') {
                     steps {
                             sh 'mvn package'
                     }
 
-                }*/
-                stage('unit test') {
-                    steps {
-                                script{
-                                     
-                                    junit testResults: 'proyecto/target/surefire-reports/*.xml'
-                                     if(testResult != 'Failed'){
-                                        mail bcc: '',
-                                       body: 'Revisar codigo algo fallo', cc: '', 
-                                       from: '', replyTo: '',
-                                       subject: 'No se puede hacer el merge', 
-                                       to: 'dubon181014@unis.edu.gt'
-                                     }
-                                
-                                }
-                            
-                    }
-
                 }
+
                 stage('Sonarqube'){
                         steps {
                              
