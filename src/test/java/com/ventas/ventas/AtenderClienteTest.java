@@ -35,7 +35,7 @@ public class AtenderClienteTest extends VentasApplicationTests {
 	public void atenderClienteTest() throws Exception {
 		mockMvc.perform(post("/atenderCliente")
         .param("nit","666"))
-        .andExpect(redirectedUrl("/")).andExpect(status().is(302));
+        .andExpect(redirectedUrl("/")).andExpect(status().is(500));
 					
 
 	}
