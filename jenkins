@@ -37,7 +37,7 @@ pipeline{
                                body: 'Revisar codigo algo fallo', cc: '', 
                                from: '', replyTo: '',
                                subject: 'No se puede hacer el merge', 
-                               to: 'dubon181014@unis.edu.gt'
+                               to: 'jflores@unis.edu.gt'
                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 }
                             }
