@@ -31,7 +31,7 @@ pipeline{
                               
                             }
                             
-                 stage("Correo"){
+                 /*stage("Correo"){
                 steps {
                     script {
                         timeout(time: 1, unit: 'HOURS') {
@@ -47,6 +47,13 @@ pipeline{
                             }
                         }
                     }
+                }*/
+                stage("Servidor"){
+                       steps{
+                            script{
+                               deploy adapters: [tomcat9(credentialsId: '59242480-d1c1-4265-b337-3746d2b1201a', path: '', url: 'http://192.168.1.34:8085')], contextPath: 'rps', war: '**/*.war'
+                            }    
+                       }
                 }
                 
                  
