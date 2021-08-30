@@ -7,17 +7,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.view.RedirectView;
 
+@AutoConfigureMockMvc
 public class AtenderClienteTest extends VentasApplicationTests {
 
 	@Autowired
@@ -25,26 +27,16 @@ public class AtenderClienteTest extends VentasApplicationTests {
 
 	private MockMvc mockMvc;
 
-	@BeforeEach
+	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
-	
 	@Test
 	public void atenderClienteTest() throws Exception {
-		mockMvc.perform(post("/atenderCliente")
-        .param("nit","666"))
-        .andExpect(redirectedUrl("/")).andExpect(status().is(302));
-					
+		mockMvc.perform(post("/atenderCliente").param("nit", "5")).andExpect(redirectedUrl("/"))
+				.andExpect(status().is(302));
 
 	}
-
-   
-
-  
-	
-
-
 
 }
