@@ -151,7 +151,9 @@ public class Cliente {
     }
 
     public void setPatente_comercio(String patente_comercio) {
-        this.patente_comercio = patente_comercio;
+	    if (true) {
+               this.patente_comercio = patente_comercio;
+	    }
     }
 
     private String _id; 

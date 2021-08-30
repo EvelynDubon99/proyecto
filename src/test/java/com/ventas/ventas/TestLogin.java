@@ -7,17 +7,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.view.RedirectView;
 
+@AutoConfigureMockMvc
 public class TestLogin extends VentasApplicationTests {
 
 	@Autowired
@@ -25,53 +24,37 @@ public class TestLogin extends VentasApplicationTests {
 
 	private MockMvc mockMvc;
 
-	@BeforeEach
+	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
-	
-	
 	@Test
 	public void logCorrecto() throws Exception {
-		mockMvc.perform(post("/log")
-        .param("usuario","Empleado01")
-        .param("contraseña","aaa"))
-        .andExpect(redirectedUrl("/"));
-					
+		mockMvc.perform(post("/log").param("usuario", "Empleado01").param("contraseña", "aaa"))
+				.andExpect(redirectedUrl("/"));
 
 	}
 
-    @Test
+	@Test
 	public void logIncorrecto_contraseña() throws Exception {
-		mockMvc.perform(post("/log")
-        .param("usuario","Empleado01")
-        .param("contraseña","aaaa"))
-        .andExpect(redirectedUrl("/login?error=true"));
-
-				
+		mockMvc.perform(post("/log").param("usuario", "Empleado01").param("contraseña", "aaaa"))
+				.andExpect(redirectedUrl("/login?error=true"));
 
 	}
 
-    @Test
+	@Test
 	public void logIncorrecto_usuario() throws Exception {
-		mockMvc.perform(post("/log")
-        .param("usuario","Empleado01x")
-        .param("contraseña","aaa"))
-        .andExpect(redirectedUrl("/login?error=true"));
-	
+		mockMvc.perform(post("/log").param("usuario", "Empleado01x").param("contraseña", "aaa"))
+				.andExpect(redirectedUrl("/login?error=true"));
 
 	}
 
-    @Test
+	@Test
 	public void logIncorrecto_usuario_contraseña() throws Exception {
-		mockMvc.perform(post("/log")
-        .param("usuario","Empleado01x")
-        .param("contraseña","aaaa"))
-        .andExpect(redirectedUrl("/login?error=true"));
-	
+		mockMvc.perform(post("/log").param("usuario", "Empleado01x").param("contraseña", "aaaa"))
+				.andExpect(redirectedUrl("/login?error=true"));
 
 	}
-
 
 }

@@ -1,7 +1,7 @@
 package com.ventas.ventas;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,11 +16,8 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,62 +26,52 @@ import org.springframework.web.servlet.view.RedirectView;
 
 public class TelefonoTest extends VentasApplicationTests {
 
-	@Autowired
-	private WebApplicationContext webApplicationContext;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
-	private MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired(required = true)
-    private Dao dao; 
-    
+    private Dao dao;
+
     @Autowired(required = true)
-    Dao mockdao = mock(Dao.class); 
-    
-	@BeforeEach
-	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        dao = mock(Dao.class); 
-	}
+    Dao mockdao = mock(Dao.class);
 
-   
-
+    @Before
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        dao = mock(Dao.class);
+    }
 
     @Test
-    public void crearTelefonoTest() throws Exception
-    {
-                
-       Telefono tel = new Telefono(); 
+    public void crearTelefonoTest() throws Exception {
+
+        Telefono tel = new Telefono();
         tel.setId_marca(1);
         tel.setNombret("PruebaTelefno");
         tel.setCodigo_modelo("xxx");
         tel.setAlmacenamiento(80);
         tel.setColor("morado");
         tel.setExistencia(10);
-        dao.save(tel);        
+        dao.save(tel);
         verify(dao, times(1)).save(tel);
-        
-         
-   
+
     }
 
     @Test
-    public void updateTelefonoTest() throws IOException
-    {
-        
-        Telefono tel = mockdao.get(17);        
-            tel.setNombret("Gio frijolitos");        
-        mockdao.updateT(tel);         
-        assertSame(tel.getNombret(),"Gio frijolitos" ); 
+    public void updateTelefonoTest() throws IOException {
+
+        Telefono tel = mockdao.get(22);
+        tel.setNombret("AAAA");
+        mockdao.updateT(tel);
+        assertSame(tel.getNombret(), "AAAA");
     }
-  
 
     @Test
-    public void mostrarTelefonoTest() throws IOException
-    {
-        List<Telefono> tel;  
-        tel  = mockdao.list();
-        assert((tel).size() > 1) ;
-      
+    public void mostrarTelefonoTest() throws IOException {
+        List<Telefono> tel;
+        tel = mockdao.list();
+        assert ((tel).size() > 1);
+
     }
-	
 
 }
