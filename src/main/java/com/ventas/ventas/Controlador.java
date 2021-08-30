@@ -40,18 +40,23 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 /**
- * <p>El controlador, sirve para mostrar, redireccionar las paginas web, asi como mostrar los resultados de las paginas web</p>
+ * <p>
+ * El controlador, sirve para mostrar, redireccionar las paginas web, asi como
+ * mostrar los resultados de las paginas web
+ * </p>
  */
 @Controller
 public class Controlador {
-    String session2; 
-    int id_session2; 
-    @Autowired 
-    private Correo correo; 
+    String session2;
+    int id_session2;
+    @Autowired
+    private Correo correo;
 
     @Autowired(required = true)
     private Dao dao;
+
     /**
      * <p>
      * Método para ver los dispositivos del sistema de ventas
@@ -67,7 +72,7 @@ public class Controlador {
     public String viewHomePage(final Model model, HttpSession session) {
         final List<Telefono> listaDis = dao.list();
         model.addAttribute("listaDis", listaDis);
-        //model.addAttribute("imgUtil", new ImageUtil());
+        // model.addAttribute("imgUtil", new ImageUtil());
 
         if (session.getAttribute("name") == null) {
             return "accesoProhibido.html";
@@ -112,7 +117,7 @@ public class Controlador {
     @RequestMapping(value = "/individual/{id}", method = RequestMethod.GET)
     public String view(final Model model, @PathVariable("id") int id) {
         final List<Telefono> listaDis = dao.list2(id);
-        final List<Telefono> opciones = dao.listOpciones("Select *from VENTAS.fabrica");
+        final List<Telefono> opciones = dao.listOpciones("Select *from DEV.fabrica");
         model.addAttribute("opciones", opciones);
         model.addAttribute("listaDis", listaDis);
         model.addAttribute("imgUtil", new ImageUtil());
@@ -145,9 +150,9 @@ public class Controlador {
         byte[] fotoa = foto1.getBytes();
         byte[] fotob = foto2.getBytes();
         byte[] fotoc = foto3.getBytes();
-        dao.updateF(fotoa, "UPDATE VENTAS.BODEGA SET foto1=? WHERE id_bodega=?", id);
-        dao.updateF(fotob, "UPDATE VENTAS.BODEGA SET foto2=? WHERE id_bodega=?", id);
-        dao.updateF(fotoc, "UPDATE VENTAS.BODEGA SET foto3=? WHERE id_bodega=?", id);
+        dao.updateF(fotoa, "UPDATE DEV.BODEGA SET foto1=? WHERE id_bodega=?", id);
+        dao.updateF(fotob, "UPDATE DEV.BODEGA SET foto2=? WHERE id_bodega=?", id);
+        dao.updateF(fotoc, "UPDATE DEV.BODEGA SET foto3=? WHERE id_bodega=?", id);
 
         String tabla = "Bodega";
         dao.historialC(session2, "Update", tabla);
@@ -170,7 +175,7 @@ public class Controlador {
     public String showNewForm(Model model) {
         Telefono nuevo = new Telefono();
         model.addAttribute("nuevo", nuevo);
-        final List<Telefono> opciones = dao.listOpciones("Select *from VENTAS.fabrica");
+        final List<Telefono> opciones = dao.listOpciones("Select *from DEV.fabrica");
         model.addAttribute("opciones", opciones);
         return "new";
     }
@@ -290,7 +295,7 @@ public class Controlador {
     public String viewCliente(Model model) throws IOException {
         Cliente ci = new Cliente();
         model.addAttribute("ci", ci);
-        final List<Cliente> opciones = dao.listOpcionesC("Select *from VENTAS.tipo_clientes");
+        final List<Cliente> opciones = dao.listOpcionesC("Select *from DEV.tipo_clientes");
         model.addAttribute("opciones", opciones);
 
         return "cliente.html";
@@ -555,11 +560,12 @@ public class Controlador {
      *         que desea el cliente.
      */
     @RequestMapping(value = "/pedido", method = RequestMethod.POST)
-    public String añadirPediod(@ModelAttribute("pedidon") Pedido ma, @RequestParam("id_cliente") int id, @RequestParam("cantidadp") int times) throws IOException {
+    public String añadirPediod(@ModelAttribute("pedidon") Pedido ma, @RequestParam("id_cliente") int id,
+            @RequestParam("cantidadp") int times) throws IOException {
 
         dao.insertarPedido(ma);
         String tabla = "Pedido";
-        dao.asignarNum(id,times);
+        dao.asignarNum(id, times);
         dao.historialC(session2, "Insert", tabla);
 
         return "redirect:/";
@@ -651,7 +657,7 @@ public class Controlador {
     public String comprarT(@RequestParam(name = "id_cliente") int id) {
 
         dao.comprarT(id);
-  
+
         return "redirect:/carro";
     }
 
@@ -1127,7 +1133,6 @@ public class Controlador {
         return "AAFabricaDispo.html";
     }
 
-
     /**
      * <p>
      * Método para eliminar una fabrica
@@ -1147,260 +1152,195 @@ public class Controlador {
         return "redirect:/fabricas";
     }
 
-    
+    // TODO:Cambio
 
-    
-      
-    //TODO:Cambio   
+    /**
+     * <p>
+     * Este controlador es para hacer un pedidos al sistema de fabrica
+     * </p>
+     * 
+     * @param nuevo el telefono a pedir
+     * @param idu   el id del usuario que lo pidio
+     * @param idd   el id de la terminal a pedir
+     * @return la pagina a redireccionar
+     * 
+     */
+    @RequestMapping(value = "/savePD", method = RequestMethod.POST)
+    public String savep(@ModelAttribute("nuevo") Telefono nuevo, @RequestParam(name = "idu") String idu,
+            @RequestParam(name = "_idd") String idd) throws IOException {
 
+        // dao.save(nuevo);
 
-       /**
-         * <p>Este controlador es para hacer un pedidos al sistema de fabrica</p>
-         * @param nuevo el telefono a pedir
-         * @param idu   el id del usuario que lo pidio
-         * @param idd   el id de la terminal a pedir
-         * @return la pagina a redireccionar 
-      
-        */    
-        @RequestMapping(value = "/savePD", method = RequestMethod.POST)
-        public String savep(@ModelAttribute("nuevo") Telefono nuevo,@RequestParam(name="idu") String idu,@RequestParam(name="_idd") String idd)
-                throws IOException {
-            
-            //dao.save(nuevo);
+        String uri = "http://" + ip + ":" + puerto + "/api/pedidos/gios";
+        RestTemplate restTemplate = new RestTemplate();
 
-            String uri = "http://" + ip +":"+ puerto+ "/api/pedidos/gios";
-		    RestTemplate restTemplate = new RestTemplate();
+        Map<String, String> map = new HashMap<>();
+        Date fecha = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String f = sdf.format(new Date());
 
-		    Map<String, String> map = new HashMap<>();
-            Date fecha = new Date(); 
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            String f = sdf.format(new Date());
+        map.put("cantidad", String.valueOf(nuevo.getExistencia()));
+        map.put("fecha_p", f);
+        map.put("dispositivo", idd);
+        map.put("cliente", idu);
 
-            map.put("cantidad", String.valueOf(nuevo.getExistencia()));          
-            map.put("fecha_p", f); 
-            map.put("dispositivo",idd);
-            map.put("cliente",idu);              
-           
-			  
-		    ResponseEntity<Void> response  = restTemplate.postForEntity(uri, map, Void.class);
-		
-		if (response.getStatusCode() == HttpStatus.OK) {
-			System.out.println("Request Successful");
-		} else {
-			System.out.println("Request Failed");
-		}
-		return "redirect:/";
-            
-    
-    
+        ResponseEntity<Void> response = restTemplate.postForEntity(uri, map, Void.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            System.out.println("Request Successful");
+        } else {
+            System.out.println("Request Failed");
         }
+        return "redirect:/";
 
-     
+    }
 
+    /**
+     * <p>
+     * Este controlador es para confirmar el pediod a fabrica
+     * </p>
+     * 
+     * @param nuevo el telefono a confirmar
+     * @param idu   el id del usuario que lo confirmo
+     * @param idd   el id de la terminal a confirmar
+     * @param idp   el id del pedido a confirmar
+     * @return la pagina a redireccionar
+     * 
+     */
+    @RequestMapping(value = "/savePD2")
+    public String save2(@ModelAttribute("nuevo") Telefono nuevo, @RequestParam(name = "idu") String idu,
+            @RequestParam(name = "_idd") String idd, @RequestParam(name = "_idp") String idp,
+            @RequestParam(name = "listanum") List<String> num) throws IOException {
 
+        dao.save(nuevo);
+        for (String string : num) {
+            String[] parts = string.split("/");
+            if (!string.equals("1")) {
 
-        /**
-         * <p>Este controlador es para confirmar el pediod a fabrica</p>
-         * @param nuevo el telefono a confirmar 
-         * @param idu   el id del usuario que lo confirmo 
-         * @param idd   el id de la terminal a confirmar 
-         * @param idp   el id del pedido a confirmar 
-         * @return la pagina a redireccionar 
-      
-        */ 
-        @RequestMapping(value = "/savePD2")
-        public String save2(@ModelAttribute("nuevo") Telefono nuevo,@RequestParam(name="idu") String idu,@RequestParam(name="_idd") String idd,@RequestParam(name="_idp") String idp,@RequestParam(name="listanum") List<String> num)
-                throws IOException {
-            
-           
-                dao.save(nuevo);
-                    for (String string : num) {
-                        String[] parts = string.split("/");
-                        if(!string.equals("1")){
-                            
-                            dao.saveNum(string,parts[0],dao.getlastID().getId_bodega());
-                            
-                        }
-                        
-                    }
-  
+                dao.saveNum(string, parts[0], dao.getlastID().getId_bodega());
 
-        
-
-            String uri = "http://" + ip +":"+ puerto+ "/api/pedidos/" + idp;
-		    RestTemplate restTemplate = new RestTemplate();
-		    Map<String, String> map = new HashMap<>();       
-            map.put("estado","Entregado");        
-  
-           	
-		  
-           Telefono wry = new Telefono();
-           wry.setEstado("Entregado");
-            
-		  
-
-		   restTemplate.put(uri, map);  
-
-           
-		
-		return "redirect:/";
-            
-    
-    
-        }
-
-    
-
-         /**
-         * <p>Este controlador es para visualizar los pedidos realizados a cada fabrica </p>
-         * @param model la representacion html 
-         * @param id el id de la fabrica a consultar los pedidos       
-         * @return la pagina a redireccionar 
-      
-        */        
-        @RequestMapping(value = "/pedidosF/{id}",method = RequestMethod.GET)
-        public String   getPedidoF(final Model model,@PathVariable("id") int id)
-
-        {
-
-            final List<Fabrica> listaF = dao.getFab(id); 
-        
-                for (Fabrica fabrica : listaF) {
-                ip = fabrica.getIp();
-                puerto = fabrica.getPuerto(); 
-            
-                }
-            final List<Fabrica> listaF2 = dao.getFab(id); 
-            int idmarca = 0; 
-            for (Fabrica fabrica : listaF2) {
-                idmarca += fabrica.getId_fabrica();
             }
-            model.addAttribute("id_marca", idmarca);
-            String con = ip +":" + puerto; 
-            model.addAttribute("conexion", con);
-
-
-                String uri = "http://" + ip +":"+ puerto+ "/api/pedidos";
-                url = uri; 
-                RestTemplate restTemplate = new RestTemplate();   
-                ResponseEntity<Telefono[]> response = restTemplate.getForEntity(uri,Telefono[].class);
-                Telefono[] employees = response.getBody();	  
-                model.addAttribute("listaFD", employees); 
-
-                /*
-                final List<Telefono> listaDis = dao.listPedidoF();
-            
-                model.addAttribute("listaFD", listaDis);  
-
-        
-                */
-
-
-        
-            
-                return "FabricaControl.html";
-        }
-    
-
-
-
-    
-         /**
-         * <p>Este controlador es para confirmar a fabrica  </p>
-         * @deprecated
-         * usado solo para hacer pruebas con la api
-         * @param model la representacion html 
-         * @param n el telefono que se guardo   
-         * @return la pagina a redireccionar 
-      
-        */ 
-        @RequestMapping(value = "/updateEstadp")
-        public String updateP(final Model model,@ModelAttribute("nuevo") Telefono n)
-
-        {       
-        
-            String uri = "http://" + ip +":"+ puerto+ "/api/pedidos/6074b74053f92e0fb4017181";
-            RestTemplate restTemplate = new RestTemplate();
-
-		    Map<String, String> map = new HashMap<>();
-           
-            map.put("Estado", "Entregado");         
-        
-
-            
-		
-		    return "a "; 
-		
-		  
 
         }
 
+        String uri = "http://" + ip + ":" + puerto + "/api/pedidos/" + idp;
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, String> map = new HashMap<>();
+        map.put("estado", "Entregado");
 
+        Telefono wry = new Telefono();
+        wry.setEstado("Entregado");
 
+        restTemplate.put(uri, map);
 
-        @RequestMapping(value = "/devolucion")
-        public String devolucion(final Model model,@RequestParam(name="ip") String ips,@RequestParam(name="puerto") String puertos,@RequestParam(name="series") String series)
+        return "redirect:/";
 
-        {       
-            String conexion =  "" + ips +":" + puertos; 
-            
-            model.addAttribute("conexion",conexion);
-            model.addAttribute("series",series);
+    }
 
-            return "terminalIndividual.html";
-           
+    /**
+     * <p>
+     * Este controlador es para visualizar los pedidos realizados a cada fabrica
+     * </p>
+     * 
+     * @param model la representacion html
+     * @param id    el id de la fabrica a consultar los pedidos
+     * @return la pagina a redireccionar
+     * 
+     */
+    @RequestMapping(value = "/pedidosF/{id}", method = RequestMethod.GET)
+    public String getPedidoF(final Model model, @PathVariable("id") int id)
+
+    {
+
+        final List<Fabrica> listaF = dao.getFab(id);
+
+        for (Fabrica fabrica : listaF) {
+            ip = fabrica.getIp();
+            puerto = fabrica.getPuerto();
+
         }
-
-
-
-
-        @RequestMapping(value = "/devolver")
-        public String devolver(final Model model,@RequestParam(name="conexion") String conexion,@RequestParam(name="serie") String num_series)
-
-        {       
-        
-            String uri = "http://" + conexion+ "/api/serie/"+num_series;
-            RestTemplate restTemplate = new RestTemplate();
-		    Map<String, String> map = new HashMap<>();           
-            map.put("estado", "Devuelto");         
-
-            
-		
-            restTemplate.put(uri, map);  
-		
-		  
-
-		  
-        
-            
-            return "redirect:/terminales";
+        final List<Fabrica> listaF2 = dao.getFab(id);
+        int idmarca = 0;
+        for (Fabrica fabrica : listaF2) {
+            idmarca += fabrica.getId_fabrica();
         }
+        model.addAttribute("id_marca", idmarca);
+        String con = ip + ":" + puerto;
+        model.addAttribute("conexion", con);
 
-     
+        String uri = "http://" + ip + ":" + puerto + "/api/pedidos";
+        url = uri;
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<Telefono[]> response = restTemplate.getForEntity(uri, Telefono[].class);
+        Telefono[] employees = response.getBody();
+        model.addAttribute("listaFD", employees);
 
+        /*
+         * final List<Telefono> listaDis = dao.listPedidoF();
+         * 
+         * model.addAttribute("listaFD", listaDis);
+         * 
+         * 
+         */
 
+        return "FabricaControl.html";
+    }
 
+    /**
+     * <p>
+     * Este controlador es para confirmar a fabrica
+     * </p>
+     * 
+     * @deprecated usado solo para hacer pruebas con la api
+     * @param model la representacion html
+     * @param n     el telefono que se guardo
+     * @return la pagina a redireccionar
+     * 
+     */
+    @RequestMapping(value = "/updateEstadp")
+    public String updateP(final Model model, @ModelAttribute("nuevo") Telefono n)
 
-   
+    {
 
+        String uri = "http://" + ip + ":" + puerto + "/api/pedidos/6074b74053f92e0fb4017181";
+        RestTemplate restTemplate = new RestTemplate();
 
+        Map<String, String> map = new HashMap<>();
 
+        map.put("Estado", "Entregado");
 
+        return "a ";
 
+    }
 
+    @RequestMapping(value = "/devolucion")
+    public String devolucion(final Model model, @RequestParam(name = "ip") String ips,
+            @RequestParam(name = "puerto") String puertos, @RequestParam(name = "series") String series)
 
+    {
+        String conexion = "" + ips + ":" + puertos;
 
+        model.addAttribute("conexion", conexion);
+        model.addAttribute("series", series);
 
-    
+        return "terminalIndividual.html";
 
-   
+    }
 
+    @RequestMapping(value = "/devolver")
+    public String devolver(final Model model, @RequestParam(name = "conexion") String conexion,
+            @RequestParam(name = "serie") String num_series)
 
+    {
 
+        String uri = "http://" + conexion + "/api/serie/" + num_series;
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, String> map = new HashMap<>();
+        map.put("estado", "Devuelto");
 
+        restTemplate.put(uri, map);
 
-
-
+        return "redirect:/terminales";
+    }
 
 }
-
