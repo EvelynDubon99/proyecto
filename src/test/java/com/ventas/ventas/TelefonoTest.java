@@ -1,7 +1,7 @@
 package com.ventas.ventas;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,8 +16,8 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,7 +36,7 @@ public class TelefonoTest extends VentasApplicationTests {
     @Autowired(required = true)
     Dao mockdao = mock(Dao.class);
 
-    @BeforeEach
+    @Before
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         dao = mock(Dao.class);
@@ -60,10 +60,10 @@ public class TelefonoTest extends VentasApplicationTests {
     @Test
     public void updateTelefonoTest() throws IOException {
 
-        Telefono tel = mockdao.get(17);
-        tel.setNombret("Gio frijolitos");
+        Telefono tel = mockdao.get(22);
+        tel.setNombret("AAAA");
         mockdao.updateT(tel);
-        assertSame(tel.getNombret(), "Gio frijolitos");
+        assertSame(tel.getNombret(), "AAAA");
     }
 
     @Test

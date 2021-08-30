@@ -10,52 +10,46 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
-
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.view.RedirectView;
 
+@AutoConfigureMockMvc
 public class CorreoTest extends VentasApplicationTests {
 
-	@Autowired
-	private WebApplicationContext webApplicationContext;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
 
-	private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired(required = true)
     @Mock
-    private Correo correo ; 
+    private Correo correo;
 
-	@BeforeEach
-	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        correo = mock(Correo.class); 
-	}
-
-    @Test
-    public void enviarCorreo(){
-
-        String mensaje = "Los dispositvos comprados este mes fueron: ";
-        String mensajeT = " '\n'El total de compras al credito es de: " ;  
-
-        correo.sendMail("marcellinos777@gmail.com", "chavarria181386@unis.edu.gt" , "Detalle",mensaje + mensajeT);
-        verify(correo, times(1)).sendMail("marcellinos777@gmail.com", "chavarria181386@unis.edu.gt" , "Detalle",mensaje + mensajeT); 
-
-        
-
+    @Before
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        correo = mock(Correo.class);
     }
 
-    
-	
-	
+    @Test
+    public void enviarCorreo() {
+
+        String mensaje = "Los dispositvos comprados este mes fueron: ";
+        String mensajeT = " '\n'El total de compras al credito es de: ";
+
+        correo.sendMail("marcellinos777@gmail.com", "dubon181014@unis.edu.gt", "Detalle", mensaje + mensajeT);
+        verify(correo, times(1)).sendMail("marcellinos777@gmail.com", "dubon181014@unis.edu.gt", "Detalle",
+                mensaje + mensajeT);
+
+    }
 
 }
