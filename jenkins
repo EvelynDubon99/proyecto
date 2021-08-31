@@ -9,7 +9,7 @@ pipeline{
                 stage('conexion') {
                     steps {
 
-                         git 'https://github.com/EvelynDubon99/proyecto'
+                         git branch: 'dev', url: 'https://github.com/EvelynDubon99/proyecto'
                     }
                 }
                 stage('Build') {
