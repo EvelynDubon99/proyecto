@@ -170,7 +170,7 @@ public class Controlador {
      * @return Se mostrara un html con los campos que se deberan ingresar para que
      *         se agrege un nuevo dispositivo en el sistema de ventas.
      */
-    // insertar telefono
+    // insertar telefonos
     @RequestMapping("/new")
     public String showNewForm(Model model) {
         Telefono nuevo = new Telefono();
