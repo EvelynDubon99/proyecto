@@ -1275,14 +1275,6 @@ public class Controlador {
         Telefono[] employees = response.getBody();
         model.addAttribute("listaFD", employees);
 
-        /*
-         * final List<Telefono> listaDis = dao.listPedidoF();
-         * 
-         * model.addAttribute("listaFD", listaDis);
-         * 
-         * 
-         */
-
         return "FabricaControl.html";
     }
 
