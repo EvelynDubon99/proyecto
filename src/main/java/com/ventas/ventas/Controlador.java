@@ -150,9 +150,6 @@ public class Controlador {
         byte[] fotoa = foto1.getBytes();
         byte[] fotob = foto2.getBytes();
         byte[] fotoc = foto3.getBytes();
-        dao.updateF(fotoa, "UPDATE UAT.BODEGA SET foto1=? WHERE id_bodega=?", id);
-        dao.updateF(fotob, "UPDATE UAT.BODEGA SET foto2=? WHERE id_bodega=?", id);
-        dao.updateF(fotoc, "UPDATE UAT.BODEGA SET foto3=? WHERE id_bodega=?", id);
 
         String tabla = "Bodega";
         dao.historialC(session2, "Update", tabla);
