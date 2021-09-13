@@ -51,7 +51,7 @@ pipeline{
                 stage("Servidor"){
                        steps{
                             script {
-                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.34:8085/')], contextPath: 'rps', war: '**/*.war'
+                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.9:8085/')], contextPath: 'rps', war: '**/*.war'
                             }    
                        }
                 }
