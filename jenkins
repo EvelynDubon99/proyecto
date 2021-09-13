@@ -40,8 +40,8 @@ pipeline{
                                mail bcc: '',
                                body: 'Revisar codigo algo fallo', cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
-                               subject: 'No se puede hacer el merge', 
-                               to: 'jflores@unis.edu.gt'
+                               subject: 'Pipeline fail', 
+                               to: 'jflores@unis.edu.gt, dubon181014@unis.edu.gt'
                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 }
                             }
