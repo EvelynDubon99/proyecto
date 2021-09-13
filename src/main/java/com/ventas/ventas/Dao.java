@@ -105,6 +105,28 @@ public class Dao {
 
     /**
      * <p>
+     * Método para actualizar las fotos de las terminales
+     * </p>
+     * 
+     * @deprecated Este Método quedo desactualizado, se paso a manejar las imagenes
+     *             con url
+     * @param foto     son los bytes de la foto
+     * @param consulta el string para generar la consulta para actualizar los
+     *                 dispositivos
+     * @param id       la llave primaria para ejectuar la consulta sobre un registro
+     *                 en particular
+     */
+    public void updateF(byte[] foto, String consulta, int id) {
+
+        if (foto.length > 0) {
+            jdbcTemplate.update(consulta, foto, id);
+
+        }
+
+    }
+
+    /**
+     * <p>
      * Método para actualizar los parametros de las terminales
      * </p>
      * 
