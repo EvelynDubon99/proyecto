@@ -57,14 +57,12 @@ public class TelefonoTest extends VentasApplicationTests {
 
     }
 
-    @Test
-    public void updateTelefonoTest() throws IOException {
-
-        Telefono tel = mockdao.get(22);
-        tel.setNombret("AAAA");
-        mockdao.updateT(tel);
-        assertSame(tel.getNombret(), "AAAA");
-    }
+    /*
+     * @Test public void updateTelefonoTest() throws IOException {
+     * 
+     * Telefono tel = mockdao.get(141); tel.setNombret("iPhone11");
+     * mockdao.updateT(tel); assertSame(tel.getNombret(), "iPhone12"); }
+     */
 
     @Test
     public void mostrarTelefonoTest() throws IOException {
