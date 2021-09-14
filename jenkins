@@ -55,7 +55,7 @@ pipeline{
      post{
                     failure{
                         mail bcc: '',
-                               body: "Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER}", 
+                               body: "Project: ${JOB_NAME}-${BUILD_NUMBER}", 
                                cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
