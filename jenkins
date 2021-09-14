@@ -65,7 +65,7 @@ pipeline{
     
     post{
                     failure{
-                        emailext body: '', recipientProviders: [brokenBuildSuspects()], subject: 'Pipeline Unit testing fail', to: 'dubon181014@unis.edu.gt'
+                        emailext attachLog: true, body: '', subject: 'Pipeline fail', to: 'dubon181014@unis.edu.gt'
                     
                     }
                 
