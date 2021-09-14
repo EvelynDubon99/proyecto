@@ -55,10 +55,13 @@ pipeline{
                             }    
                        }
                 }
+    }    
+     post{
+                    failure{
+                        emailext attachLog: true, body: '', subject: 'Pipeline fail', to: 'dubon181014@unis.edu.gt'
+                    
+                    }
                 
-                 
-                 
                 
-             
-    }            
+                }
 }
