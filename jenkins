@@ -1,3 +1,4 @@
+def failure_stage = ''
 pipeline{
         agent any
             tools { 
@@ -8,14 +9,34 @@ pipeline{
             stages {
                 stage('conexion') {
                     steps {
+                        script{
+                                 failure_stage=env.STAGE_NAME
+                                 echo "Repositorio"
+                        }
 
                          git 'https://github.com/EvelynDubon99/proyecto'
                     }
                 }
                 stage('Build') {
                     steps {
+                        script{
+                                 failure_stage=env.STAGE_NAME
+                                 echo "Build"
+                        }
                             sh 'mvn package'
+                            
                     }
+
+                }
+                stage('Unit testing') {
+                    steps {
+                        script{
+                                 failure_stage=env.STAGE_NAME
+                                 echo "Unit testing"
+                        }
+                            sh 'mvn test'
+                    }
+                    
 
                 }
                 
@@ -24,8 +45,14 @@ pipeline{
                         steps {
                              
                                 withSonarQubeEnv('sonarq') {
+                                
+                                        script{
+                                         failure_stage=env.STAGE_NAME
+                                         echo "SonarQube"
+                                        }
                                       sh 'mvn clean verify sonar:sonar -Dsonar.password= -Dsonar.login=4bd6c4579731a545ef9183b3165215a6d6e14f21'
                                 }
+                                
                     
                                 
                              }
@@ -35,7 +62,9 @@ pipeline{
                  stage("Quality Gate"){
                 steps {
                     script {
-                        timeout(time: 1, unit: 'HOURS') {
+                              failure_stage=env.STAGE_NAME
+                              echo "Quality Gate"
+                            timeout(time: 1, unit: 'HOURS') {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
                               
@@ -48,6 +77,8 @@ pipeline{
                 stage("Servidor"){
                        steps{
                             script {
+                                failure_stage=env.STAGE_NAME
+                                echo "Servidor Tomcat"
                                deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.9:8085/')], contextPath: 'rps', war: '**/*.war'
                             }    
                        }
@@ -57,7 +88,7 @@ pipeline{
                     failure{
                     
                     mail bcc: '',
-                               body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}", 
+                               body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${failure_stage}", 
                                cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
