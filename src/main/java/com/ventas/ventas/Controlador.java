@@ -72,8 +72,6 @@ public class Controlador {
     public String viewHomePage(final Model model, HttpSession session) {
         final List<Telefono> listaDis = dao.list();
         model.addAttribute("listaDis", listaDis);
-        // model.addAttribute("imgUtil", new ImageUtil());
-
         if (session.getAttribute("name") == null) {
             return "accesoProhibido.html";
         } else {
