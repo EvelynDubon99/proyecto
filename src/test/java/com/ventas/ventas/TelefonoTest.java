@@ -60,7 +60,7 @@ public class TelefonoTest extends VentasApplicationTests {
     @Test
     public void updateTelefonoTest() throws IOException {
 
-        Telefono tel = mockdao.get(22);
+        Telefono tel = mockdao.get(45);
         tel.setNombret("AAAA");
         mockdao.updateT(tel);
         assertSame(tel.getNombret(), "AAAA");
