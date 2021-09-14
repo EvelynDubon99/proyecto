@@ -55,7 +55,8 @@ pipeline{
      post{
                     failure{
                         mail bcc: '',
-                               body: "Project: ${currentBuild.currentResult}", 
+                               body: "Project: ${currentBuild.currentResult}, Job: ${env.JOB_NAME},
+                                URL: ${env.BUILD_URL}, Buil Number: ${env.BUILD_NUMBER}, ERROR: ${build.logFile.text.readLines().any}", 
                                cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
