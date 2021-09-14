@@ -558,7 +558,7 @@ public class Controlador {
      *         que desea el cliente.
      */
     @RequestMapping(value = "/pedido", method = RequestMethod.POST)
-    public String añadirPediod(@ModelAttribute("pedidon") Pedido ma, @RequestParam("id_cliente") int id,
+    public String anadirPediod(@ModelAttribute("pedidon") Pedido ma, @RequestParam("id_cliente") int id,
             @RequestParam("cantidadp") int times) throws IOException {
 
         dao.insertarPedido(ma);
