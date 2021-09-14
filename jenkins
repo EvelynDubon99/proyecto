@@ -61,7 +61,7 @@ pipeline{
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
                                to: 'jflores@unis.edu.gt, dubon181014@unis.edu.gt'
-                     emailext attachLog: true
+                     emailext attachLog: true, body: '', subject: ''
                               
                                
                     
