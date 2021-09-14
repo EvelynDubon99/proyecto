@@ -18,7 +18,6 @@ pipeline{
                     }
 
                 }
-
                 stage('Sonarqube'){
                         steps {
                              
@@ -31,17 +30,13 @@ pipeline{
                               
                             }
                             
-                 stage("Correo"){
+                 stage("Quality Gate"){
                 steps {
                     script {
                         timeout(time: 1, unit: 'HOURS') {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
-                               mail bcc: '',
-                               body: 'Revisar codigo algo fallo', cc: '', 
-                               from: '', replyTo: '',
-                               subject: 'Pipeline fail', 
-                               to: 'jflores@unis.edu.gt, dubon181014@unis.edu.gt'
+                              
                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 }
                             }
@@ -52,13 +47,24 @@ pipeline{
                        steps{
                             script {
                                deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.9:8085/')], contextPath: 'rps', war: '**/*.war'
-                            }    
+                             }    
                        }
                 }
+        }    
+        post{
+                    failure{
+                    
+                    mail bcc: '',
+                               body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}", 
+                               cc: 'dubon181014@unis.edu.gt', 
+                               from: '', replyTo: '',
+                               subject: 'Pipeline fail', 
+                               to: 'jflores@unis.edu.gt, dubon181014@unis.edu.gt'
+                               
+                    
+                    }
                 
-                 
-                 
                 
-             
-    }            
+                }
 }
+  
