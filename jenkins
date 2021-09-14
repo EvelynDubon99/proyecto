@@ -18,6 +18,14 @@ pipeline{
                     }
 
                 }
+                post{
+                    failure{
+                        emailext body: '', recipientProviders: [brokenBuildSuspects()], subject: 'Pipeline Unit testing fail', to: 'dubon181014@unis.edu.gt'
+                    
+                    }
+                
+                
+                }
 
                 stage('Sonarqube'){
                         steps {
