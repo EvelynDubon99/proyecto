@@ -64,12 +64,11 @@ public class TelefonoTest extends VentasApplicationTests {
      * mockdao.updateT(tel); assertSame(tel.getNombret(), "iPhone12"); }
      */
 
-    @Test
-    public void mostrarTelefonoTest() throws IOException {
-        List<Telefono> tel;
-        tel = mockdao.list();
-        assert ((tel).size() > 1);
-
-    }
+    /*
+     * @Test public void mostrarTelefonoTest() throws IOException { List<Telefono>
+     * tel; tel = mockdao.list(); assert ((tel).size() > 1);
+     * 
+     * }
+     */
 
 }

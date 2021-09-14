@@ -44,7 +44,7 @@ public class BusquedaTest extends VentasApplicationTests {
 	@Test
 	public void busqueda() throws Exception {
 		LinkedMultiValueMap<String, String> requestParams = new LinkedMultiValueMap<>();
-		requestParams.add("buscar", "AAAA");
+		requestParams.add("buscar", "iPone11");
 		mockMvc.perform(get("/busqueda").params(requestParams)).andExpect(status().isOk());
 
 	}
