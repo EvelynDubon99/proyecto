@@ -59,7 +59,7 @@ pipeline{
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
                                to: 'jflores@unis.edu.gt, dubon181014@unis.edu.gt'
-                               attachLog: true
+                               
                     
                     }
                 
