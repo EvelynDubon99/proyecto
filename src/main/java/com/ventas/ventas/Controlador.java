@@ -1,4 +1,3 @@
-
 package com.ventas.ventas;
 
 import java.io.IOException;
@@ -9,22 +8,37 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.hibernate.annotations.Any;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 //Rest
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -57,6 +71,7 @@ public class Controlador {
     public String viewHomePage(final Model model, HttpSession session) {
         final List<Telefono> listaDis = dao.list();
         model.addAttribute("listaDis", listaDis);
+        // model.addAttribute("imgUtil", new ImageUtil());
 
         if (session.getAttribute("name") == null) {
             return "accesoProhibido.html";
@@ -101,7 +116,7 @@ public class Controlador {
     @RequestMapping(value = "/individual/{id}", method = RequestMethod.GET)
     public String view(final Model model, @PathVariable("id") int id) {
         final List<Telefono> listaDis = dao.list2(id);
-        final List<Telefono> opciones = dao.listOpciones("Select *from UAT.fabrica");
+        final List<Telefono> opciones = dao.listOpciones("Select *from VENTAS.fabrica");
         model.addAttribute("opciones", opciones);
         model.addAttribute("listaDis", listaDis);
         model.addAttribute("imgUtil", new ImageUtil());
@@ -134,9 +149,9 @@ public class Controlador {
         byte[] fotoa = foto1.getBytes();
         byte[] fotob = foto2.getBytes();
         byte[] fotoc = foto3.getBytes();
-        dao.updateF(fotoa, "UPDATE UAT.BODEGA SET foto1=? WHERE id_bodega=?", id);
-        dao.updateF(fotob, "UPDATE UAT.BODEGA SET foto2=? WHERE id_bodega=?", id);
-        dao.updateF(fotoc, "UPDATE UAT.BODEGA SET foto3=? WHERE id_bodega=?", id);
+        dao.updateF(fotoa, "UPDATE VENTAS.BODEGA SET foto1=? WHERE id_bodega=?", id);
+        dao.updateF(fotob, "UPDATE VENTAS.BODEGA SET foto2=? WHERE id_bodega=?", id);
+        dao.updateF(fotoc, "UPDATE VENTAS.BODEGA SET foto3=? WHERE id_bodega=?", id);
 
         String tabla = "Bodega";
         dao.historialC(session2, "Update", tabla);
@@ -159,7 +174,7 @@ public class Controlador {
     public String showNewForm(Model model) {
         Telefono nuevo = new Telefono();
         model.addAttribute("nuevo", nuevo);
-        final List<Telefono> opciones = dao.listOpciones("Select *from UAT.fabrica");
+        final List<Telefono> opciones = dao.listOpciones("Select *from VENTAS.fabrica");
         model.addAttribute("opciones", opciones);
         return "new";
     }
@@ -279,7 +294,7 @@ public class Controlador {
     public String viewCliente(Model model) throws IOException {
         Cliente ci = new Cliente();
         model.addAttribute("ci", ci);
-        final List<Cliente> opciones = dao.listOpcionesC("Select *from UAT.tipo_clientes");
+        final List<Cliente> opciones = dao.listOpcionesC("Select *from VENTAS.tipo_clientes");
         model.addAttribute("opciones", opciones);
 
         return "cliente.html";
@@ -1259,6 +1274,13 @@ public class Controlador {
         Telefono[] employees = response.getBody();
         model.addAttribute("listaFD", employees);
 
+        /*
+         * final List<Telefono> listaDis = dao.listPedidoF();
+         * 
+         * model.addAttribute("listaFD", listaDis);
+         * 
+         */
+
         return "FabricaControl.html";
     }
 
@@ -1313,10 +1335,7 @@ public class Controlador {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, String> map = new HashMap<>();
         map.put("estado", "Devuelto");
-
         restTemplate.put(uri, map);
-
         return "redirect:/terminales";
     }
-
 }

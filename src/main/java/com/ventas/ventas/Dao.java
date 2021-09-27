@@ -65,7 +65,7 @@ public class Dao {
      * @return listaDis la lista con todos las terminales disponibles
      */
     public List<Telefono> list() {
-        String sql = "select *from UAT.bodega inner join UAT.fabrica on origen = id_fabrica  where id_estados = 3 or id_estados = 4";
+        String sql = "select *from VENTAS.bodega inner join VENTAS.fabrica on origen = id_fabrica  where id_estados = 3 or id_estados = 4";
         List<Telefono> listaDis = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Telefono.class));
         return listaDis;
 
@@ -81,7 +81,7 @@ public class Dao {
      *         que se manda como parametro
      */
     public List<Telefono> list2(int id) {
-        String sql = "select *from UAT.bodega inner join UAT.fabrica on origen = id_fabrica where id_bodega  = ?";
+        String sql = "select *from VENTAS.bodega inner join VENTAS.fabrica on origen = id_fabrica where id_bodega  = ?";
         Object[] args = { id };
         List<Telefono> listaIn = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Telefono.class));
         return listaIn;
@@ -97,7 +97,7 @@ public class Dao {
      * @return nuevo objeto de tipo telefono
      */
     public Telefono get(int id) {
-        String sql = "SELECT * FROM UAT.Bodega where id_bodega = ?";
+        String sql = "SELECT * FROM VENTAS.Bodega where id_bodega = ?";
         Object[] args = { id };
         Telefono nuevo = jdbcTemplate.queryForObject(sql, args, BeanPropertyRowMapper.newInstance(Telefono.class));
         return nuevo;
@@ -138,7 +138,7 @@ public class Dao {
      *              espacios</b>
      */
     public void updateT(Telefono nuevo) {
-        String sql = "UPDATE UAT.BODEGA SET existencia=:existencia , precio_lista=:precio_lista, codigo_modelo=:codigo_modelo, ram=:ram, almacenamiento=:almacenamiento, procesador=:procesador, numero_cores=:numero_cores,color=:color,descripcion=:descripcion,nombret=:nombret,origen=origen,foto1=:foto1,foto2=:foto2,foto3=:foto3 WHERE id_bodega=:id_bodega";
+        String sql = "UPDATE VENTAS.BODEGA SET existencia=:existencia , precio_lista=:precio_lista, codigo_modelo=:codigo_modelo, ram=:ram, almacenamiento=:almacenamiento, procesador=:procesador, numero_cores=:numero_cores,color=:color,descripcion=:descripcion,nombret=:nombret,origen=origen,foto1=:foto1,foto2=:foto2,foto3=:foto3 WHERE id_bodega=:id_bodega";
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(nuevo);
 
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
@@ -161,7 +161,7 @@ public class Dao {
     public void save(Telefono nuevo) throws IOException {
 
         SimpleJdbcInsert insertActor = new SimpleJdbcInsert(jdbcTemplate);
-        insertActor.withSchemaName("UAT").withTableName("BODEGA").usingColumns("existencia", "precio_lista",
+        insertActor.withSchemaName("VENTAS").withTableName("BODEGA").usingColumns("existencia", "precio_lista",
                 "codigo_modelo", "ram", "almacenamiento", "procesador", "numero_cores", "color", "descripcion",
                 "nombret", "origen", "id_estados", "foto1", "foto2", "foto3");
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(nuevo);
@@ -181,7 +181,7 @@ public class Dao {
      *                 </p>
      */
     public void saveNum(String num, String modelo, int id) {
-        String sql = "insert into UAT.numeros_serie(num_series,modelo,id_bodega) values(?,?,?) ";
+        String sql = "insert into ventas.numeros_serie(num_series,modelo,id_bodega) values(?,?,?) ";
         jdbcTemplate.update(sql, num, modelo, id);
 
     }
@@ -196,7 +196,7 @@ public class Dao {
      * </p>
      */
     public Telefono getlastID() {
-        String sql = "select *from UAT.bodega order by id_bodega desc FETCH FIRST 1 ROWS ONLY ";
+        String sql = "select *from ventas.bodega order by id_bodega desc FETCH FIRST 1 ROWS ONLY ";
         Telefono registro = jdbcTemplate.queryForObject(sql, BeanPropertyRowMapper.newInstance(Telefono.class));
         return registro;
     }
@@ -213,7 +213,7 @@ public class Dao {
      *           </p>
      */
     public void delete(int id) {
-        String sql = "DELETE FROM UAT.BODEGA WHERE id_bodega = ?";
+        String sql = "DELETE FROM VENTAS.BODEGA WHERE id_bodega = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -249,7 +249,7 @@ public class Dao {
      * 
      */
     public List<Telefono> listBus(String buscar) {
-        String sql = "select *from UAT.bodega where nombret like ?   ";
+        String sql = "select *from VENTAS.bodega where nombret like ?   ";
         Object[] args = { buscar };
         List<Telefono> listaBusqueda = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Telefono.class));
         return listaBusqueda;
@@ -266,7 +266,7 @@ public class Dao {
      * 
      */
     public void deleteT(int id) {
-        String sql = "DELETE FROM UAT.bodega WHERE id_bodega = ?";
+        String sql = "DELETE FROM VENTAS.bodega WHERE id_bodega = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -281,7 +281,7 @@ public class Dao {
      * 
      */
     public List<Telefono> bodega() {
-        String sql = "select *from UAT.bodega";
+        String sql = "select *from ventas.bodega";
         List<Telefono> terminalList = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Telefono.class));
         return terminalList;
 
@@ -299,7 +299,7 @@ public class Dao {
      * 
      */
     public List<Cliente> listaCliente() {
-        String sql = "select * from UAT.clientes where id_cliente != '1' and id_cliente  != 2";
+        String sql = "select * from ventas.clientes where id_cliente != '1' and id_cliente  != 2";
         List<Cliente> listCli = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Cliente.class));
         return listCli;
     }
@@ -337,8 +337,8 @@ public class Dao {
      */
     public void saveCliente(Cliente ci) {
         SimpleJdbcInsert insertActor = new SimpleJdbcInsert(jdbcTemplate);
-        insertActor.withSchemaName("UAT").withTableName("CLIENTES").usingColumns("nombre", "apellido", "nit", "correo",
-                "inicio_suscripcion", "vencimiento_suscripcion", "id_tipo_cliente", "patente_comercio");
+        insertActor.withSchemaName("VENTAS").withTableName("CLIENTES").usingColumns("nombre", "apellido", "nit",
+                "correo", "inicio_suscripcion", "vencimiento_suscripcion", "id_tipo_cliente", "patente_comercio");
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(ci);
         insertActor.execute(param);
     }
@@ -350,10 +350,9 @@ public class Dao {
      * 
      * @param id identificador del cliente a borrar
      * 
-     * 
      */
     public void deletecliente(int id) {
-        String sql = "DELETE FROM UAT.CLIENTES WHERE id_cliente = ?";
+        String sql = "DELETE FROM VENTAS.CLIENTES WHERE id_cliente = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -366,7 +365,7 @@ public class Dao {
      * 
      */
     public void updateC(Cliente ci) {
-        String sql = "UPDATE UAT.CLIENTES SET  nombre=:nombre, apellido=:apellido,nit=:nit,correo=:correo, inicio_suscripcion=:inicio_suscripcion, vencimiento_suscripcion=:vencimiento_suscripcion,patente_comercio=:patente_comercio ,id_tipo_cliente=:id_tipo_cliente WHERE id_cliente=:id_cliente";
+        String sql = "UPDATE VENTAS.CLIENTES SET  nombre=:nombre, apellido=:apellido,nit=:nit,correo=:correo, inicio_suscripcion=:inicio_suscripcion, vencimiento_suscripcion=:vencimiento_suscripcion,patente_comercio=:patente_comercio ,id_tipo_cliente=:id_tipo_cliente WHERE id_cliente=:id_cliente";
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(ci);
 
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
@@ -383,7 +382,7 @@ public class Dao {
      * 
      */
     public Cliente getC(int id) {
-        String sql = "SELECT * FROM UAT.CLIENTES WHERE id_cliente = ?";
+        String sql = "SELECT * FROM VENTAS.CLIENTES WHERE id_cliente = ?";
         Object[] args = { id };
         Cliente ci = jdbcTemplate.queryForObject(sql, args, BeanPropertyRowMapper.newInstance(Cliente.class));
         return ci;
@@ -400,7 +399,7 @@ public class Dao {
      * 
      */
     public List<Cliente> listaCliente2(int id) {
-        String sql = "select * from UAT.clientes where id_cliente = ?";
+        String sql = "select * from ventas.clientes where id_cliente = ?";
         Object[] args = { id };
         List<Cliente> listasC = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Cliente.class));
         return listasC;
@@ -417,7 +416,7 @@ public class Dao {
      * 
      */
     public List<Marca> listMarca() {
-        String sql = "select * from UAT.marca_dispositivo";
+        String sql = "select * from VENTAS.marca_dispositivo";
         List<Marca> listMar = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Marca.class));
         return listMar;
     }
@@ -432,7 +431,7 @@ public class Dao {
      * 
      */
     public List<Marca> listMar2(int id) {
-        String sql = "select * from UAT.marca_dispositivo where id_marca = ?";
+        String sql = "select * from VENTAS.marca_dispositivo where id_marca = ?";
         Object[] args = { id };
         List<Marca> listMar = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Marca.class));
         return listMar;
@@ -447,7 +446,7 @@ public class Dao {
      */
     public void saveMarca(Marca ma) {
         SimpleJdbcInsert insertActor = new SimpleJdbcInsert(jdbcTemplate);
-        insertActor.withSchemaName("UAT").withTableName("MARCA_DISPOSITIVO").usingColumns("nombre_marca");
+        insertActor.withSchemaName("VENTAS").withTableName("MARCA_DISPOSITIVO").usingColumns("nombre_marca");
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(ma);
 
         insertActor.execute(param);
@@ -461,7 +460,7 @@ public class Dao {
      * 
      */
     public void deleteMarca(int id) {
-        String sql = "DELETE FROM UAT.marca_dispositivo WHERE id_marca = ?";
+        String sql = "DELETE FROM VENTAS.marca_dispositivo WHERE id_marca = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -473,7 +472,7 @@ public class Dao {
      * 
      */
     public void updateMarca(Marca ma) {
-        String sql = "UPDATE UAT.marca_dispositivo SET  nombre_marca=:nombre_marca WHERE id_marca=:id_marca";
+        String sql = "UPDATE VENTAS.marca_dispositivo SET  nombre_marca=:nombre_marca WHERE id_marca=:id_marca";
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(ma);
 
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
@@ -492,12 +491,11 @@ public class Dao {
      * @param nuevo es el objeto de tipo Pedido con la info a guardar
      * @throws IOException
      * 
-     * 
      */
     public void insertarPedido(Pedido nuevo) throws IOException {
         SimpleJdbcInsert insertActor = new SimpleJdbcInsert(jdbcTemplate);
-        insertActor.withSchemaName("UAT").withTableName("PEDIDO").usingColumns("ID_CLIENTE", "CANTIDADP", "CANTIDADP_A",
-                "ID_BODEGA", "TOTAL_C");
+        insertActor.withSchemaName("VENTAS").withTableName("PEDIDO").usingColumns("ID_CLIENTE", "CANTIDADP",
+                "CANTIDADP_A", "ID_BODEGA", "TOTAL_C");
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(nuevo);
         insertActor.execute(param);
     }
@@ -511,7 +509,7 @@ public class Dao {
      * 
      */
     public List<Cliente> idCliente(int nit) {
-        String sql = "select id_cliente from UAT.clientes where nit = ?";
+        String sql = "select id_cliente from ventas.clientes where nit = ?";
         Object[] args = { nit };
         List<Cliente> idC = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Cliente.class));
         return idC;
@@ -526,7 +524,7 @@ public class Dao {
      * 
      */
     public List<Cliente> clienteNit(int nit) {
-        String sql = "select * from UAT.clientes where nit = ?";
+        String sql = "select * from ventas.clientes where nit = ?";
         Object[] args = { nit };
         List<Cliente> idCn = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Cliente.class));
         return idCn;
@@ -543,7 +541,7 @@ public class Dao {
      * 
      */
     public void facturar(int id, int cred) {
-        String sql = "UPDATE UAT.pedido SET credito = ? where id_cliente = ? and compra != 1  ";
+        String sql = "UPDATE VENTAS.pedido SET credito = ? where id_cliente = ? and compra != 1  ";
         jdbcTemplate.update(sql, cred, id);
 
     }
@@ -558,7 +556,7 @@ public class Dao {
      */
     public List<Pedido> mostrarCarro(int id) {
 
-        String sql = "select *from UAT.bodega inner join UAT.pedido using(id_bodega) where id_cliente = ? and compra != 1";
+        String sql = "select *from ventas.bodega inner join ventas.pedido using(id_bodega) where id_cliente = ? and compra != 1";
         Object[] args = { id };
         List<Pedido> listaC = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Pedido.class));
         return listaC;
@@ -575,7 +573,7 @@ public class Dao {
      */
     public List<Pedido> mostrarFactura(int id) {
 
-        String sql = "select (UAT.precio(id_tipo_cliente,id_bodega)*(cantidadp+cantidadp_a)) as precio_total, b.* from(  select  *from UAT.clientes inner join(    select *from UAT.bodega inner join UAT.pedido using(id_bodega) )a  using(id_cliente))b where id_cliente = ? and compra =0 ";
+        String sql = "select (ventas.precio(id_tipo_cliente,id_bodega)*(cantidadp+cantidadp_a)) as precio_total, b.* from(  select  *from ventas.clientes inner join(    select *from ventas.bodega inner join ventas.pedido using(id_bodega) )a  using(id_cliente))b where id_cliente = ? and compra =0 ";
         Object[] args = { id };
         List<Pedido> listaF = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Pedido.class));
         return listaF;
@@ -592,7 +590,7 @@ public class Dao {
      */
     public List<Pedido> total(int id) {
 
-        String sql = "select sum(total) as totales  from(select (UAT.precio(id_tipo_cliente,id_bodega)*(cantidadp+cantidadp_a)) as total, b.* from(select  *from UAT.clientes inner join( select *from UAT.bodega inner join UAT.pedido using(id_bodega) )a  using(id_cliente))b)c where id_cliente = ? and compra = 0 ";
+        String sql = "select sum(total) as totales  from(select (ventas.precio(id_tipo_cliente,id_bodega)*(cantidadp+cantidadp_a)) as total, b.* from(select  *from ventas.clientes inner join( select *from ventas.bodega inner join ventas.pedido using(id_bodega) )a  using(id_cliente))b)c where id_cliente = ? and compra = 0 ";
         Object[] args = { id };
         List<Pedido> listaT = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Pedido.class));
         return listaT;
@@ -609,7 +607,7 @@ public class Dao {
      */
     public List<Pedido> total2(int id) {
 
-        String sql = "select sum(total) as totales  from(select (UAT.precio(id_tipo_cliente,id_bodega)*(cantidadp+cantidadp_a)) as total, b.* from(select  *from UAT.clientes inner join( select *from UAT.bodega inner join UAT.pedido using(id_bodega) )a  using(id_cliente))b)c where id_cliente = ? and compra = 1 ";
+        String sql = "select sum(total) as totales  from(select (ventas.precio(id_tipo_cliente,id_bodega)*(cantidadp+cantidadp_a)) as total, b.* from(select  *from ventas.clientes inner join( select *from ventas.bodega inner join ventas.pedido using(id_bodega) )a  using(id_cliente))b)c where id_cliente = ? and compra = 1 ";
         Object[] args = { id };
         List<Pedido> listaT = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Pedido.class));
         return listaT;
@@ -625,7 +623,7 @@ public class Dao {
      * 
      */
     public void deletePedido(int id) {
-        String sql = "DELETE FROM UAT.pedido where id_pedido = ?";
+        String sql = "DELETE FROM VENTAS.pedido where id_pedido = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -640,10 +638,10 @@ public class Dao {
      * 
      */
     public void comprarT(int id) {
-        String sql = "update UAT.pedido set id_estado = 2 , compra = 1 where id_cliente = ? and compra = 0";
+        String sql = "update ventas.pedido set id_estado = 2 , compra = 1 where id_cliente = ? and compra = 0";
         jdbcTemplate.update(sql, id);
 
-        String sql2 = "update UAT.pedido set descontado = 1 where id_cliente = ?";
+        String sql2 = "update ventas.pedido set descontado = 1 where id_cliente = ?";
         jdbcTemplate.update(sql2, id);
 
     }
@@ -661,7 +659,7 @@ public class Dao {
      */
     public List<Usuarios> listUsuarios(String usuario, String contraseña) {
 
-        String sql = "select *from UAT.USUARIO where usuario = ? and contraseña = ?";
+        String sql = "select *from VENTAS.USUARIO where usuario = ? and contraseña = ?";
         Object[] args = { usuario, contraseña };
         List<Usuarios> listaU = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Usuarios.class));
         return listaU;
@@ -678,7 +676,7 @@ public class Dao {
      */
     public List<Usuarios> usuariosMostrar() {
 
-        String sql = "select *from UAT.usuario inner join UAT.tipo_usuario using(id_tipo_usuario)";
+        String sql = "select *from VENTAS.usuario inner join VENTAS.tipo_usuario using(id_tipo_usuario)";
 
         List<Usuarios> listaU = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Usuarios.class));
         return listaU;
@@ -695,7 +693,7 @@ public class Dao {
      */
     public List<Usuarios> getUsuarioporNombre() {
 
-        String sql = "select *from UAT.usuario inner join UAT.tipo_usuario using(id_tipo_usuario) where nombre = ?";
+        String sql = "select *from VENTAS.usuario inner join VENTAS.tipo_usuario using(id_tipo_usuario) where nombre = ?";
         List<Usuarios> listaU = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Usuarios.class));
         return listaU;
 
@@ -710,7 +708,7 @@ public class Dao {
      * 
      */
     public void updateU(Usuarios nuevo) {
-        String sql = "UPDATE UAT.usuario SET usuario=:usuario , id_tipo_usuario=:id_tipo_usuario WHERE id_usuario=:id_usuario";
+        String sql = "UPDATE VENTAS.usuario SET usuario=:usuario , id_tipo_usuario=:id_tipo_usuario WHERE id_usuario=:id_usuario";
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(nuevo);
 
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
@@ -727,7 +725,7 @@ public class Dao {
      * 
      */
     public void deleteUsuario(int id) {
-        String sql = "DELETE FROM UAT.usuario WHERE id_usuario = ?";
+        String sql = "DELETE FROM VENTAS.usuario WHERE id_usuario = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -743,7 +741,7 @@ public class Dao {
     public void crearU(Usuarios nuevo) throws IOException {
 
         SimpleJdbcInsert insertActor = new SimpleJdbcInsert(jdbcTemplate);
-        insertActor.withSchemaName("UAT").withTableName("USUARIO").usingColumns("usuario", "contraseña",
+        insertActor.withSchemaName("VENTAS").withTableName("USUARIO").usingColumns("usuario", "contraseña",
                 "id_tipo_usuario");
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(nuevo);
         insertActor.execute(param);
@@ -761,7 +759,7 @@ public class Dao {
      * 
      */
     public List<Historial> cambios() {
-        String sql = "select *from UAT.historial order by fecha_cambio desc";
+        String sql = "select *from ventas.historial order by fecha_cambio desc";
         List<Historial> listaDis = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Historial.class));
         return listaDis;
 
@@ -776,7 +774,7 @@ public class Dao {
      * @throws IOException
      */
     public void historialBorrar() throws IOException {
-        String sql = "delete from UAT.historial where cambio != 'Elimino historial'";
+        String sql = "delete from ventas.historial where cambio != 'Elimino historial'";
         jdbcTemplate.update(sql);
     }
 
@@ -791,7 +789,7 @@ public class Dao {
      * @throws IOException
      */
     public void historialC(String usuario, String cambio, String tabla) throws IOException {
-        String sql = "insert into UAT.historial(usuario,cambio,tabla,fecha_cambio) values(?,?,?, cast(current_date as timestamp) at time zone 'UTC')";
+        String sql = "insert into ventas.historial(usuario,cambio,tabla,fecha_cambio) values(?,?,?, cast(current_date as timestamp) at time zone 'UTC')";
         jdbcTemplate.update(sql, usuario, cambio, tabla);
 
     }
@@ -804,7 +802,7 @@ public class Dao {
      * @return una lista de tipo de telefono resultado de consultar una vista
      */
     public List<Telefono> listTerminales() {
-        String sql = "select *from UAT.VIEW2";
+        String sql = "select *from VENTAS.VIEW2";
         List<Telefono> listaDis = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Telefono.class));
         return listaDis;
 
@@ -819,7 +817,7 @@ public class Dao {
      */
     public List<Pedido> mostrarC(int id) {
 
-        String sql = "select *from UAT.view1 where id_cliente = ? and compra =1 ";
+        String sql = "select *from ventas.view1 where id_cliente = ? and compra =1 ";
         Object[] args = { id };
         List<Pedido> listaF = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Pedido.class));
         return listaF;
@@ -837,7 +835,7 @@ public class Dao {
      */
     public List<Pedido> board() {
 
-        String sql = "select nombref, sum(cantidad) as cantidad from UAT.view3  where compra =1  group by nombref  ";
+        String sql = "select nombref, sum(cantidad) as cantidad from ventas.view3  where compra =1  group by nombref  ";
         List<Pedido> listaF = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Pedido.class));
         return listaF;
 
@@ -853,7 +851,7 @@ public class Dao {
      * 
      */
     public List<Fabrica> listFabrica() {
-        String sql = "select *from UAT.fabrica";
+        String sql = "select *from VENTAS.fabrica";
         List<Fabrica> listaDis = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Fabrica.class));
         return listaDis;
 
@@ -871,7 +869,7 @@ public class Dao {
     public void guardarFabrica(Fabrica nuevo) throws IOException {
 
         SimpleJdbcInsert insertActor = new SimpleJdbcInsert(jdbcTemplate);
-        insertActor.withSchemaName("UAT").withTableName("FABRICA").usingColumns("IP", "PUERTO", "NOMBREF");
+        insertActor.withSchemaName("VENTAS").withTableName("FABRICA").usingColumns("IP", "PUERTO", "NOMBREF");
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(nuevo);
 
         insertActor.execute(param);
@@ -889,7 +887,7 @@ public class Dao {
      * 
      */
     public List<Fabrica> getFab(int id) {
-        String sql = "select *from UAT.fabrica where id_fabrica = ?";
+        String sql = "select *from VENTAS.fabrica where id_fabrica = ?";
         Object[] args = { id };
         List<Fabrica> listaIn = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Fabrica.class));
         return listaIn;
@@ -907,7 +905,7 @@ public class Dao {
      * 
      */
     public List<Fabrica> getFabdaots(int id) {
-        String sql = "select *from UAT.fabrica inner join UAT.bodega on id_fabrica =origen where id_fabrica =?";
+        String sql = "select *from ventas.fabrica inner join ventas.bodega on id_fabrica =origen where id_fabrica =?";
         Object[] args = { id };
         List<Fabrica> listaIn = jdbcTemplate.query(sql, args, BeanPropertyRowMapper.newInstance(Fabrica.class));
         return listaIn;
@@ -923,7 +921,7 @@ public class Dao {
      * 
      */
     public void deletefab(int id) {
-        String sql = "DELETE FROM UAT.fabrica WHERE id_fabrica = ?";
+        String sql = "DELETE FROM VENTAS.fabrica WHERE id_fabrica = ?";
         jdbcTemplate.update(sql, id);
     }
 
@@ -939,7 +937,7 @@ public class Dao {
     public void save2(Telefono nuevo) throws IOException {
 
         SimpleJdbcInsert insertActor = new SimpleJdbcInsert(jdbcTemplate);
-        insertActor.withSchemaName("UAT").withTableName("BODEGA").usingColumns("existencia", "precio_lista",
+        insertActor.withSchemaName("VENTAS").withTableName("BODEGA").usingColumns("existencia", "precio_lista",
                 "codigo_modelo", "ram", "almacenamiento", "procesador", "numero_cores", "color", "descripcion",
                 "nombret", "origen", "id_estados");
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(nuevo);
@@ -955,7 +953,7 @@ public class Dao {
      * 
      */
     public List<Telefono> listPedidoF() {
-        String sql = "select *from UAT.estadosf inner join(select *from UAT.bodega inner join UAT.fabrica on origen = id_fabrica where id_estados = 1)a on ID_ESTADOF = ID_ESTADOS";
+        String sql = "select *from ventas.estadosf inner join(select *from VENTAS.bodega inner join VENTAS.fabrica on origen = id_fabrica where id_estados = 1)a on ID_ESTADOF = ID_ESTADOS";
         List<Telefono> listaDis = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Telefono.class));
         return listaDis;
 
@@ -972,7 +970,7 @@ public class Dao {
      * 
      */
     public void confirmarP(Telefono n) {
-        String sql = "UPDATE UAT.bodega set id_estados=:id_estados where id_bodega=:id_bodega";
+        String sql = "UPDATE VENTAS.bodega set id_estados=:id_estados where id_bodega=:id_bodega";
         BeanPropertySqlParameterSource param = new BeanPropertySqlParameterSource(n);
 
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(jdbcTemplate);
@@ -990,7 +988,7 @@ public class Dao {
      * 
      */
     public List<EnviarCorreo> listaReporte(int origen) {
-        String sql = "select nombret, cantidadp, cantidadp_a, total_c,origen  from UAT.fabrica inner join(select *from UAT.bodega inner join UAT.pedido using(id_bodega))a on origen = id_fabrica where id_estado = 2 and origen = ?";
+        String sql = "select nombret, cantidadp, cantidadp_a, total_c,origen  from ventas.fabrica inner join(select *from ventas.bodega inner join ventas.pedido using(id_bodega))a on origen = id_fabrica where id_estado = 2 and origen = ?";
         Object[] args = { origen };
         List<EnviarCorreo> listaDis = jdbcTemplate.query(sql, args,
                 BeanPropertyRowMapper.newInstance(EnviarCorreo.class));
@@ -999,12 +997,12 @@ public class Dao {
     }
 
     public void asignarNum(int dueño, int times) {
-        String sql = "UPDATE UAT.numeros_serie set estadov=1,dueño=? where estadov= 0 and rownum <=  " + times + "";
+        String sql = "UPDATE VENTAS.numeros_serie set estadov=1,dueño=? where estadov= 0 and rownum <=  " + times + "";
         jdbcTemplate.update(sql, dueño);
     }
 
     public void asignarNumPermanente(int dueño, int times) {
-        String sql = "UPDATE UAT.numeros_serie set estadov=1,dueño=?  rownum <=  " + times + "";
+        String sql = "UPDATE VENTAS.numeros_serie set estadov=1,dueño=?  rownum <=  " + times + "";
         jdbcTemplate.update(sql, dueño);
     }
 
