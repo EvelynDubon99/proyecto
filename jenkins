@@ -23,7 +23,7 @@ pipeline{
                                  f_stage=env.STAGE_NAME
                                  echo "Build"
                         }
-                            sh 'mvn package'
+                            sh 'mvn -Dspring.profiles.active=dev package'
                             
                     }
 
