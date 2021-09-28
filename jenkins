@@ -23,7 +23,7 @@ pipeline{
                                  f_stage=env.STAGE_NAME
                                  echo "Build"
                         }
-                            sh 'mvn package'
+                            sh 'mvn -Dspring.profiles.active=uat package'
                             
                     }
 
@@ -34,7 +34,7 @@ pipeline{
                                 f_stage=env.STAGE_NAME
                                  echo "Unit testing"
                         }
-                            sh 'mvn test'
+                            sh 'mvn -Dspring.profiles.active=uat test'
                     }
                     
 
@@ -79,7 +79,7 @@ pipeline{
                             script {
                                f_stage=env.STAGE_NAME
                                 echo "Servidor Tomcat"
-                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.9:8085/')], contextPath: 'uat', war: '**/*.war'
+                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.8:8085/')], contextPath: 'uat', war: '**/*.war'
                             }    
                        }
                 }
@@ -92,7 +92,7 @@ pipeline{
                                cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
-                               to: 'jflores@unis.edu.gt, dubon181014@unis.edu.gt'
+                               to: ' dubon181014@unis.edu.gt'
                                
                     
                     }
