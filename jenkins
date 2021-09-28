@@ -1,3 +1,4 @@
+def f_stage = ''
 pipeline{
         agent any
             tools { 
@@ -8,40 +9,65 @@ pipeline{
             stages {
                 stage('conexion') {
                     steps {
+                        script{
+                                 f_stage=env.STAGE_NAME
+                                 echo "Repositorio"
+                        }
 
-                         git branch: 'dev', url: 'https://github.com/EvelynDubon99/proyecto'
+                          git branch: 'dev', url: 'https://github.com/EvelynDubon99/proyecto'
                     }
                 }
                 stage('Build') {
                     steps {
-                            sh 'mvn package'
+                        script{
+                                 f_stage=env.STAGE_NAME
+                                 echo "Build"
+                        }
+                            sh 'mvn -Dspring.profiles.active=dev package'
+                            
                     }
 
                 }
+                stage('Unit testing') {
+                    steps {
+                        script{
+                                 f_stage=env.STAGE_NAME
+                                 echo "Unit testing"
+                        }
+                            sh 'mvn -Dspring.profiles.active=dev test'
+                    }
+                    
 
-                stage('Sonarqube'){
+                }
+                
+
+                  stage('Sonarqube'){
                         steps {
                              
                                 withSonarQubeEnv('sonarq') {
+                                
+                                        script{
+                                         f_stage=env.STAGE_NAME
+                                         echo "SonarQube"
+                                        }
                                       sh 'mvn clean verify sonar:sonar -Dsonar.password= -Dsonar.login=4bd6c4579731a545ef9183b3165215a6d6e14f21'
                                 }
+                                
                     
                                 
                              }
                               
                             }
                             
-                 stage("Correo"){
+                 stage("Quality Gate"){
                 steps {
                     script {
-                        timeout(time: 1, unit: 'HOURS') {
+                              f_stage=env.STAGE_NAME
+                              echo "Quality Gate"
+                            timeout(time: 1, unit: 'HOURS') {
                             def qg = waitForQualityGate()
                             if (qg.status != 'OK') {
-                               mail bcc: '',
-                               body: 'Revisar codigo algo fallo', cc: 'dubon181014@unis.edu.gt', 
-                               from: '', replyTo: '',
-                               subject: 'No se puede hacer el merge', 
-                               to: 'jflores@unis.edu.gt'
+                              
                                error "Pipeline aborted due to quality gate failure: ${qg.status}"
                                 }
                             }
@@ -51,14 +77,26 @@ pipeline{
                 stage("Servidor"){
                        steps{
                             script {
-                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.34:8085/')], contextPath: 'rps', war: '**/*.war'
+                                f_stage=env.STAGE_NAME
+                                echo "Servidor Tomcat"
+                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.9:8085/')], contextPath: 'dev', war: '**/*.war'
                             }    
                        }
                 }
+    }    
+     post{
+                    failure{
+                    
+                    mail bcc: '',
+                               body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", 
+                               cc: 'dubon181014@unis.edu.gt', 
+                               from: '', replyTo: '',
+                               subject: 'Pipeline fail', 
+                               to: 'jflores@unis.edu.gt, dubon181014@unis.edu.gt'
+                               
+                    
+                    }
                 
-                 
-                 
                 
-             
-    }            
+                }
 }

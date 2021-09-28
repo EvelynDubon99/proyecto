@@ -1335,10 +1335,7 @@ public class Controlador {
         RestTemplate restTemplate = new RestTemplate();
         Map<String, String> map = new HashMap<>();
         map.put("estado", "Devuelto");
-
         restTemplate.put(uri, map);
-
         return "redirect:/terminales";
     }
-
 }
