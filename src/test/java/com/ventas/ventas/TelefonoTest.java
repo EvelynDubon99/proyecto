@@ -42,7 +42,7 @@ public class TelefonoTest extends VentasApplicationTests {
         dao = mock(Dao.class);
     }
 
-    @Test
+       /* @Test
     public void crearTelefonoTest() throws Exception {
 
         Telefono tel = new Telefono();
@@ -55,7 +55,7 @@ public class TelefonoTest extends VentasApplicationTests {
         dao.save(tel);
         verify(dao, times(1)).save(tel);
 
-    }
+    }*/
 
     /*
      * @Test public void updateTelefonoTest() throws IOException {
