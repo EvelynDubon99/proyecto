@@ -5,14 +5,7 @@ steps:
   commands:
   - mvn package
   - mvn test
-- name: SonarQube
-  image: maven:3-jdk-11
-  commands: 
-    - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=http://25.2.28.209:9000
-- name: QualityGate
-  image: maven:3-jdk-11
-  commands:
-    - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=http://25.2.28.209:9000
+
 - name: Build-master
   image: maven:3-jdk-11
   commands:
@@ -27,7 +20,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war master.war
-    - curl -v -u admin:admin -T master.war 'http://25.2.28.209:8085/manager/text/deploy?path=/master&update=true'
+    - curl -v -u admin:admin -T master.war 'https://mean-wombat-91.loca.lt/manager/text/deploy?path=/master&update=true'
   when:
     branch:
       - master
