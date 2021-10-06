@@ -18,8 +18,8 @@ steps:
     - cd target/
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
-    - mv  ventas-0.0.1-SNAPSHOT.war master.war
-    - curl -v -u admin:admin -T master.war 'https://mean-wombat-91.loca.lt/manager/text/deploy?path=/master&update=true'
+    - mv  ventas-0.0.1-SNAPSHOT.war rps.war
+    - curl -v -u admin:admin -T rps.war 'https://mean-wombat-91.loca.lt/manager/text/deploy?path=/rps&update=true'
   when:
     branch:
       - master
