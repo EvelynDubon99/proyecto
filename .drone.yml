@@ -5,6 +5,16 @@ steps:
   commands:
   - mvn package
   - mvn test
+  
+  - name: SonarQube
+  image: maven:3-jdk-11
+  commands: 
+    - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://silly-ladybug-97.loca.lt/
+- name: QualityGate
+  image: maven:3-jdk-11
+  commands:
+    - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://silly-ladybug-97.loca.lt/
+
 
 - name: Build-master
   image: maven:3-jdk-11
@@ -24,25 +34,6 @@ steps:
   when:
     branch:
       - master
-
-- name: Build-dev
-  image: maven:3-jdk-11
-  commands:
-    - mvn -f pom.xml -Dspring.profiles.active=dev package
-  when:
-    branch:
-      - dev
-- name: Server-dev
-  image: alpine
-  commands:
-    - cd /target/
-    - apk add curl
-    - stat ventas-0.0.1-SNAPSHOT.war
-    - mv  ventas-0.0.1-SNAPSHOT.war dev.war
-    - curl -v -u admin:admin -T dev.war 'https://mean-wombat-91.loca.lt/manager/text/deploy?path=/dev&update=true'
-  when:
-    branch:
-      - dev
 
 - name: notify
   image: drillster/drone-email
