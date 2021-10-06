@@ -35,7 +35,7 @@ steps:
 - name: Server-dev
   image: alpine
   commands:
-    - cd /drone/src/ventas/target/
+    - cd /target/
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war dev.war
