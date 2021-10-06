@@ -31,6 +31,26 @@ steps:
   when:
     branch:
       - master
+
+- name: Build-dev
+  image: maven:3-jdk-11
+  commands:
+    - mvn -f pom.xml -Dspring.profiles.active=dev package
+  when:
+    branch:
+      - dev
+- name: Server-dev
+  image: alpine
+  commands:
+    - cd /drone/src/ventas/target/
+    - apk add curl
+    - stat ventas-0.0.1-SNAPSHOT.war
+    - mv  ventas-0.0.1-SNAPSHOT.war dev.war
+    - curl -v -u admin:admin -T dev.war 'http://25.2.28.209:8085/manager/text/deploy?path=/dev&update=true'
+  when:
+    branch:
+      - dev
+
 - name: notify
   image: drillster/drone-email
   settings:
