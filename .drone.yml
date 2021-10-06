@@ -10,9 +10,9 @@ steps:
 - name: SonarQube
   image: maven:3-jdk-11
   commands: 
-    - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=http://de78-2800-98-1127-192c-1850-15f0-b2ce-ef53.ngrok.io
+    - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=http://25.2.28.209:9000
 - name: QualityGate
   image: maven:3-jdk-11
   commands:
-    - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=http://de78-2800-98-1127-192c-1850-15f0-b2ce-ef53.ngrok.io
+    - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=http://25.2.28.209:9000
   
