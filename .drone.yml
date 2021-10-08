@@ -8,11 +8,11 @@ steps:
 - name: SonarQube
   image: maven:3-jdk-11
   commands: 
-  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://nasty-dodo-36.loca.lt
+  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://old-mule-17.loca.lt
 - name: QualityGate
   image: maven:3-jdk-11
   commands:
-  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://nasty-dodo-36.loca.lt
+  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://old-mule-17.loca.lt
 - name: Build-master
   image: maven:3-jdk-11
   commands:
@@ -27,7 +27,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war rps.war
-    - curl -v -u admin:admin -T rps.war 'http://e5b0-2800-98-1127-192c-219e-ae18-9d21-644c.ngrok.io/manager/text/deploy?path=/rps&update=true'
+    - curl -v -u admin:admin -T rps.war 'http://1a16-2800-98-1127-192c-68e3-e3c-39d9-d060.ngrok.io/manager/text/deploy?path=/rps&update=true'
   when:
     branch:
       - master
