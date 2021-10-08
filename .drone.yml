@@ -1,1 +1,52 @@
+kind: pipeline
+steps:
+- name: Unit testing
+  image: maven:3-jdk-11
+  commands:
+  - mvn package
+  - mvn test
+- name: SonarQube
+  image: maven:3-jdk-11
+  commands: 
+  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://nasty-dodo-36.loca.lt
+- name: QualityGate
+  image: maven:3-jdk-11
+  commands:
+  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://nasty-dodo-36.loca.lt
+- name: Build-master
+  image: maven:3-jdk-11
+  commands:
+  - mvn -f pom.xml -Dspring.profiles.active=master package
+  when:
+    branch:
+      - master
+- name: Server-master
+  image: alpine
+  commands:
+    - cd target/
+    - apk add curl
+    - stat ventas-0.0.1-SNAPSHOT.war
+    - mv  ventas-0.0.1-SNAPSHOT.war rps.war
+    - curl -v -u admin:admin -T rps.war 'http://e5b0-2800-98-1127-192c-219e-ae18-9d21-644c.ngrok.io/manager/text/deploy?path=/rps&update=true'
+  when:
+    branch:
+      - master
 
+- name: notify
+  image: drillster/drone-email
+  settings:
+    from: dubon181014@unis.edu.gt
+    host: smtp.gmail.com
+    port: 465
+    username:
+       from_secret: usuario
+    password: 
+      from_secret: contra
+
+    recipients:
+        - evelyndubon@gmail.com
+
+  when:
+    status:
+    - success
+    - failure
