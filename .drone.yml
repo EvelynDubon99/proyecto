@@ -42,9 +42,10 @@ steps:
        from_secret: usuario
     password: 
       from_secret: contra
-
+    subject: Pipeline 
     recipients:
         - evelyndubon@gmail.com
+    attachment: build-result.xml
 
   when:
     status:
