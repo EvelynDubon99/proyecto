@@ -79,7 +79,7 @@ pipeline{
                             script {
                                 f_stage=env.STAGE_NAME
                                 echo "Servidor Tomcat"
-                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://1a16-2800-98-1127-192c-68e3-e3c-39d9-d060.ngrok.io')], contextPath: 'master', war: '**/*.war'
+                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.20:8085/')], contextPath: 'master', war: '**/*.war'
                             }    
                        }
                 }
