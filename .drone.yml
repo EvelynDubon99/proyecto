@@ -14,10 +14,9 @@ steps:
        from_secret: usuario
     password: 
       from_secret: contra
-    subject: Pipeline 
+    subject: Pipeline Unit testing
     recipients:
         - evelyndubon@gmail.com
-    body: Se encuentra un problema en los unit testing. 
     attachment: build-result.xml
   when:
     status:
