@@ -3,8 +3,26 @@ steps:
 - name: Unit testing
   image: maven:3-jdk-11
   commands:
-  - mvn package
   - mvn test
+- name: notify
+  image: drillster/drone-email
+  settings:
+    from: dubon181014@unis.edu.gt
+    host: smtp.gmail.com
+    port: 465
+    username:
+       from_secret: usuario
+    password: 
+      from_secret: contra
+    subject: Pipeline 
+    recipients:
+        - evelyndubon@gmail.com
+    body: Se encuentra un problema en los unit testing. 
+    attachment: build-result.xml
+  when:
+    status:
+    - failure
+
 - name: SonarQube
   image: maven:3-jdk-11
   commands: 
