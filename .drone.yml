@@ -14,10 +14,9 @@ steps:
        from_secret: usuario
     password: 
       from_secret: contra
-    subject: Pipeline Unit testing
+    subject: Pipeline Unit testing Fail
     recipients:
-        - evelyndubon@gmail.com
-    attachment: build-result.xml
+        - dubon181014@unis.edu.gt
   when:
     status:
     - failure
@@ -30,6 +29,22 @@ steps:
   image: maven:3-jdk-11
   commands:
   - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://old-mule-17.loca.lt
+- name: Sonarq_email
+  image: drillster/drone-email
+  settings:
+    from: dubon181014@unis.edu.gt
+    host: smtp.gmail.com
+    port: 465
+    username:
+       from_secret: usuario
+    password: 
+      from_secret: contra
+    subject: Pipeline QualityGate Fail
+    recipients:
+        - dubon181014@unis.edu.gt
+  when:
+    status:
+    - failure
 - name: Build-master
   image: maven:3-jdk-11
   commands:
@@ -66,4 +81,3 @@ steps:
   when:
     status:
     - success
-    - failure
