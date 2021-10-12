@@ -17,6 +17,7 @@ steps:
     subject: Pipeline Unit testing Fail
     recipients:
         - dubon181014@unis.edu.gt
+        - jflores@unis.edu.gt
   when:
     status:
     - failure
@@ -42,6 +43,7 @@ steps:
     subject: Pipeline QualityGate Fail
     recipients:
         - dubon181014@unis.edu.gt
+        - jflores@unis.edu.gt
   when:
     status:
     - failure
@@ -74,9 +76,10 @@ steps:
        from_secret: usuario
     password: 
       from_secret: contra
-    subject: Pipeline 
+    subject: Pipeline Exitoso
     recipients:
         - evelyndubon@gmail.com
+        - jflores@unis.edu.gt
 
   when:
     status:
