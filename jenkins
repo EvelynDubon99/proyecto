@@ -92,7 +92,7 @@ pipeline{
                                cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
-                               to: 'dubon181014@unis.edu.gt'
+                               to: 'jflores@unis.edu.gt'
                                
                     
                     }
