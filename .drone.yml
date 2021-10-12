@@ -45,7 +45,6 @@ steps:
     subject: Pipeline 
     recipients:
         - evelyndubon@gmail.com
-    attachment: build-result.xml
 
   when:
     status:
