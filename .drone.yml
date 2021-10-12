@@ -61,7 +61,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war rps.war
-    - curl -v -u admin:admin -T rps.war 'http://1a16-2800-98-1127-192c-68e3-e3c-39d9-d060.ngrok.io/manager/text/deploy?path=/rps&update=true'
+    - curl -v -u admin:admin -T rps.war 'https://44f5-181-209-195-55.ngrok.io/manager/text/deploy?path=/rps&update=true'
   when:
     branch:
       - master
