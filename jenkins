@@ -1,0 +1,102 @@
+def f_stage = ''
+pipeline{
+        agent any
+            tools { 
+                    maven 'MAVEN_HOME'
+                   
+                    
+                }
+            stages {
+                stage('conexion') {
+                    steps {
+                        script{
+                                 f_stage=env.STAGE_NAME
+                                 echo "Repositorio"
+                        }
+
+                         git 'https://github.com/EvelynDubon99/proyecto'
+                    }
+                }
+                stage('Build') {
+                    steps {
+                        script{
+                                f_stage=env.STAGE_NAME
+                                 echo "Build"
+                        }
+                            sh 'mvn package'
+                            
+                    }
+
+                }
+                stage('Unit testing') {
+                    steps {
+                        script{
+                                 f_stage=env.STAGE_NAME
+                                 echo "Unit testing"
+                        }
+                            sh 'mvn test'
+                    }
+                    
+
+                }
+                
+
+                  stage('Sonarqube'){
+                        steps {
+                             
+                                withSonarQubeEnv('sonarq') {
+                                
+                                        script{
+                                         f_stage=env.STAGE_NAME
+                                         echo "SonarQube"
+                                        }
+                                      sh 'mvn clean verify sonar:sonar -Dsonar.password= -Dsonar.login=4bd6c4579731a545ef9183b3165215a6d6e14f21'
+                                }
+                                
+                    
+                                
+                             }
+                              
+                            }
+                            
+                 stage("Quality Gate"){
+                steps {
+                    script {
+                              f_stage=env.STAGE_NAME
+                              echo "Quality Gate"
+                            timeout(time: 1, unit: 'HOURS') {
+                            def qg = waitForQualityGate()
+                            if (qg.status != 'OK') {
+                              
+                               error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                                }
+                            }
+                        }
+                    }
+                }
+                stage("Servidor"){
+                       steps{
+                            script {
+                                f_stage=env.STAGE_NAME
+                                echo "Servidor Tomcat"
+                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.20:8085/')], contextPath: 'master', war: '**/*.war'
+                            }    
+                       }
+                }
+    }    
+     post{
+                    failure{
+                    
+                    mail bcc: '',
+                               body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", 
+                               cc: 'dubon181014@unis.edu.gt', 
+                               from: '', replyTo: '',
+                               subject: 'Pipeline fail', 
+                               to: 'jflores@unis.edu.gt'
+                               
+                    
+                    }
+                
+                
+                }
+}

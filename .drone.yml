@@ -1,0 +1,165 @@
+kind: pipeline
+steps:
+- name: Unit testing
+  image: maven:3-jdk-11
+  commands:
+  - mvn clean package
+  when:
+    event:
+      include:
+      - pull_request
+- name: Unit_email
+  image: drillster/drone-email
+  settings:
+    from: dubon181014@unis.edu.gt
+    host: smtp.gmail.com
+    port: 465
+    username:
+       from_secret: usuario
+    password: 
+      from_secret: contra
+    subject: Pipeline Unit testing Fail
+    recipients:
+        - dubon181014@unis.edu.gt
+        - jflores@unis.edu.gt
+  when:
+    event:
+      include:
+      - pull_request
+    status:
+    - failure
+    
+    
+- name: SonarQube
+  image: maven:3-jdk-11
+  commands: 
+  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://ancient-newt-7.loca.lt
+  when:
+    event:
+      include:
+      - pull_request
+ 
+- name: QualityGate
+  image: maven:3-jdk-11
+  commands:
+  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://ancient-newt-7.loca.lt
+  when:
+    event:
+      include:
+      - pull_request
+  
+- name: Sonarq_email
+  image: drillster/drone-email
+  settings:
+    from: dubon181014@unis.edu.gt
+    host: smtp.gmail.com
+    port: 465
+    username:
+       from_secret: usuario
+    password: 
+      from_secret: contra
+    subject: Pipeline QualityGate Fail
+    recipients:
+        - dubon181014@unis.edu.gt
+        - jflores@unis.edu.gt
+  when:
+    event:
+      include:
+      - pull_request
+    status:
+    - failure
+    
+    
+- name: Build-dev
+  image: maven:3-jdk-11
+  commands:
+  - mvn -f pom.xml -Dspring.profiles.active=dev package
+  when:
+    branch:
+      - dev
+    event: 
+      include: 
+      - push        
+- name: Build-uat
+  image: maven:3-jdk-11
+  commands:
+  - mvn -f pom.xml -Dspring.profiles.active=uat package
+  when:
+    branch:
+      -uat
+    event: 
+      include: 
+      - push  
+- name: Build-master
+  image: maven:3-jdk-11
+  commands:
+  - mvn -f pom.xml -Dspring.profiles.active=master package
+  when:
+    branch:
+      - master
+    event: 
+      include: 
+      - push  
+- name: Server-dev
+  image: alpine
+  commands:
+    - cd target/
+    - apk add curl
+    - stat ventas-0.0.1-SNAPSHOT.war
+    - mv  ventas-0.0.1-SNAPSHOT.war dev.war
+    - curl -v -u admin:admin -T dev.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/dev&update=true'
+  when:
+    branch:
+      - dev
+    event:
+      include: 
+      - push 
+- name: Server-uat
+  image: alpine
+  commands:
+    - cd target/
+    - apk add curl
+    - stat ventas-0.0.1-SNAPSHOT.war
+    - mv  ventas-0.0.1-SNAPSHOT.war uat.war
+    - curl -v -u admin:admin -T uat.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/uat&update=true'
+  when:
+    branch:
+      - uat
+    event:
+      include: 
+      - push
+- name: Server-master
+  image: alpine
+  commands:
+    - cd target/
+    - apk add curl
+    - stat ventas-0.0.1-SNAPSHOT.war
+    - mv  ventas-0.0.1-SNAPSHOT.war rps.war
+    - curl -v -u admin:admin -T rps.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/rps&update=true'
+  when:
+    branch:
+      - master
+- name: notify
+  image: drillster/drone-email
+  settings:
+    from: dubon181014@unis.edu.gt
+    host: smtp.gmail.com
+    port: 465
+    username:
+       from_secret: usuario
+    password: 
+      from_secret: contra
+    subject: Pipeline Exitoso
+    recipients:
+        - evelyndubon@gmail.com
+        - jflores@unis.edu.gt
+  when:
+    event: 
+      include: 
+      - push
+    status:
+    - success
+    branch: 
+    - dev
+    - master
+    - uat 
