@@ -139,5 +139,5 @@
     <property name="env.MAVEN_PROJECTBASEDIR" value="C:\Users\evely\OneDrive\Desktop\proyecto"/>
     <property name="env.PROCESSOR_LEVEL" value="6"/>
   </properties>
-  <testcase classname="com.ventas.ventas.UsuarioSetterGetterTest" name="testNombreUsuario" time="0"/>
+  <testcase classname="com.ventas.ventas.UsuarioSetterGetterTest" name="testNombreUsuario" time="0.001"/>
 </testsuite>

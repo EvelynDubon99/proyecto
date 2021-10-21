@@ -178,6 +178,7 @@
             <id>master</id>
             <properties>
                 <spring.profiles.active>master</spring.profiles.active>
+
             </properties>
         </profile>
         <profile>
