@@ -4,6 +4,11 @@ steps:
   image: maven:3-jdk-11
   commands:
   - mvn test
+  when:
+    event: 
+      include: 
+      - pull_request
+
 - name: Unit_email
   image: drillster/drone-email
   settings:
@@ -19,6 +24,9 @@ steps:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
   when:
+    event:
+      include: 
+      - pull_request
     status:
     - failure
 
@@ -26,10 +34,19 @@ steps:
   image: maven:3-jdk-11
   commands: 
   - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://brave-cheetah-54.loca.lt
+  when: 
+    event:
+      include: 
+      - pull_request
+
 - name: QualityGate
   image: maven:3-jdk-11
   commands:
   - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://brave-cheetah-54.loca.lt
+  when: 
+    event:
+      include: 
+      - pull_request
 - name: Sonarq_email
   image: drillster/drone-email
   settings:
@@ -45,8 +62,33 @@ steps:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
   when:
+    event:
+      indlude: 
+      - pull_request 
     status:
     - failure
+- name: Build-dev
+  image: maven:3-jdk-11
+  commands:
+  - mvn -f pom.xml -Dspring.profiles.active=dev package
+  when:
+    branch:
+      - dev
+    event: 
+      include: 
+      - push        
+
+- name: Build-uat
+  image: maven:3-jdk-11
+  commands:
+  - mvn -f pom.xml -Dspring.profiles.active=uat package
+  when:
+    branch:
+      -uat
+    event: 
+      include: 
+      - push  
+
 - name: Build-master
   image: maven:3-jdk-11
   commands:
@@ -54,6 +96,40 @@ steps:
   when:
     branch:
       - master
+    event: 
+      include: 
+      - push 
+
+ - name: Server-dev
+  image: alpine
+  commands:
+    - cd target/
+    - apk add curl
+    - stat ventas-0.0.1-SNAPSHOT.war
+    - mv  ventas-0.0.1-SNAPSHOT.war dev.war
+    - curl -v -u admin:admin -T dev.war 'https://44f5-181-209-195-55.ngrok.io/manager/text/deploy?path=/dev&update=true'
+  when:
+    branch:
+      - dev
+    event:
+      include: 
+      - push 
+
+- name: Server-uat
+  image: alpine
+  commands:
+    - cd target/
+    - apk add curl
+    - stat ventas-0.0.1-SNAPSHOT.war
+    - mv  ventas-0.0.1-SNAPSHOT.war uat.war
+    - curl -v -u admin:admin -T uat.war 'https://44f5-181-209-195-55.ngrok.io/manager/text/deploy?path=/uat&update=true'
+  when:
+    branch:
+      - uat
+    event:
+      include: 
+      - push
+
 - name: Server-master
   image: alpine
   commands:
@@ -82,5 +158,12 @@ steps:
         - jflores@unis.edu.gt
 
   when:
+    event: 
+      include: 
+      - push
     status:
     - success
+    branch: 
+    - dev
+    - master
+    - uat 
