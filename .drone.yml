@@ -3,7 +3,11 @@ steps:
 - name: Unit testing
   image: maven:3-jdk-11
   commands:
-  - mvn test
+  - mvn clean package
+  when:
+    event:
+      include:
+      - pull_request
 - name: Unit_email
   image: drillster/drone-email
   settings:
@@ -19,6 +23,9 @@ steps:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
   when:
+    event:
+      include:
+      - pull_request
     status:
     - failure
     
@@ -26,12 +33,20 @@ steps:
 - name: SonarQube
   image: maven:3-jdk-11
   commands: 
-  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://brave-cheetah-54.loca.lt
+  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://ancient-newt-7.loca.lt
+  when:
+    event:
+      include:
+      - pull_request
  
 - name: QualityGate
   image: maven:3-jdk-11
   commands:
-  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://brave-cheetah-54.loca.lt
+  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://ancient-newt-7.loca.lt
+  when:
+    event:
+      include:
+      - pull_request
   
 - name: Sonarq_email
   image: drillster/drone-email
@@ -48,6 +63,9 @@ steps:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
   when:
+    event:
+      include:
+      - pull_request
     status:
     - failure
     
@@ -89,7 +107,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war dev.war
-    - curl -v -u admin:admin -T dev.war 'https://44f5-181-209-195-55.ngrok.io/manager/text/deploy?path=/dev&update=true'
+    - curl -v -u admin:admin -T dev.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/dev&update=true'
   when:
     branch:
       - dev
@@ -103,7 +121,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war uat.war
-    - curl -v -u admin:admin -T uat.war 'https://44f5-181-209-195-55.ngrok.io/manager/text/deploy?path=/uat&update=true'
+    - curl -v -u admin:admin -T uat.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/uat&update=true'
   when:
     branch:
       - uat
@@ -117,7 +135,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war rps.war
-    - curl -v -u admin:admin -T rps.war 'https://44f5-181-209-195-55.ngrok.io/manager/text/deploy?path=/rps&update=true'
+    - curl -v -u admin:admin -T rps.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/rps&update=true'
   when:
     branch:
       - master
