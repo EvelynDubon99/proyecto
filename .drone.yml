@@ -98,9 +98,8 @@ steps:
       - master
     event: 
       include: 
-      - push 
-
- - name: Server-dev
+      - push  
+- name: Server-dev
   image: alpine
   commands:
     - cd target/
