@@ -79,17 +79,19 @@ steps:
       - dev
     event: 
       include: 
-      - push        
+      - push  
+      
 - name: Build-uat
   image: maven:3-jdk-11
   commands:
   - mvn -f pom.xml -Dspring.profiles.active=uat package
   when:
     branch:
-      -uat
+      - uat
     event: 
       include: 
-      - push  
+      - push 
+      
 - name: Build-master
   image: maven:3-jdk-11
   commands:
@@ -100,6 +102,7 @@ steps:
     event: 
       include: 
       - push  
+      
 - name: Server-dev
   image: alpine
   commands:
@@ -128,6 +131,7 @@ steps:
     event:
       include: 
       - push
+      
 - name: Server-master
   image: alpine
   commands:
@@ -139,6 +143,9 @@ steps:
   when:
     branch:
       - master
+    event:
+      include: 
+      - push
 - name: notify
   image: drillster/drone-email
   settings:
