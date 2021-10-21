@@ -18,8 +18,10 @@ steps:
     recipients:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
+  when:
     status:
     - failure
+    
     
 - name: SonarQube
   image: maven:3-jdk-11
@@ -45,6 +47,7 @@ steps:
     recipients:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
+  when:
     status:
     - failure
     
