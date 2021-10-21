@@ -19,10 +19,6 @@ steps:
     recipients:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
-  when:
-    event:
-      include: 
-      - pull_request
     status:
     - failure
 - name: SonarQube
@@ -37,10 +33,7 @@ steps:
   image: maven:3-jdk-11
   commands:
   - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://brave-cheetah-54.loca.lt
-  when: 
-    event:
-      include: 
-      - pull_request
+  
 - name: Sonarq_email
   image: drillster/drone-email
   settings:
@@ -55,10 +48,7 @@ steps:
     recipients:
         - dubon181014@unis.edu.gt
         - jflores@unis.edu.gt
-  when:
-    event:
-      indlude: 
-      - pull_request 
+  
     status:
     - failure
 - name: Build-dev
