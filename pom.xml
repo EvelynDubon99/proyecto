@@ -175,9 +175,10 @@
             </properties>
         </profile>
         <profile>
-            <id>prod</id>
+            <id>master</id>
             <properties>
-                <spring.profiles.active>prod</spring.profiles.active>
+                <spring.profiles.active>master</spring.profiles.active>
+
             </properties>
         </profile>
         <profile>
