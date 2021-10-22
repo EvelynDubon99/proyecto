@@ -88,12 +88,12 @@ pipeline{
                         steps{
                             script{
                                 try{
-                                    slackSend( channel: 'jenkispipeline', failOnError: true, message: 'Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}')
+                                    slackSend( channel: "jenkispipeline",  message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}")
                                 }
                                 catch(Exception error)
                                 {
                                     currentBuild.result = "FAILURE"
-                                    slackSend( channel: 'jenkispipeline', failOnError: true, message: 'Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}')
+                                    slackSend( channel: "jenkispipeline", failOnError: true, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}")
                                 }    
                                 
                             }
