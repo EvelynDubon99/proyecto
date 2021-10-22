@@ -1,4 +1,5 @@
 def f_stage = ''
+def salcknotif = slackSend(channel: "jenkispipeline", message: "pipeline message")
 pipeline{
         agent any
             tools { 
@@ -82,6 +83,25 @@ pipeline{
                                deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.20:8085/')], contextPath: 'master', war: '**/*.war'
                             }    
                        }
+                }
+
+                stage("slack"){
+                        steps{
+                            script{
+                                try{
+                                    slackSend(channel: salcknotif.channelId, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}", timestamp: salcknotif.ts)
+                                }
+                                catch(Exception error)
+                                {
+                                    currentBuild.result = "FAILURE"
+                                    slackSend(channel: salcknotif.channelId, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", timestamp: salcknotif.ts)
+                                }    
+                                
+                            }
+
+                        }    
+
+
                 }
     }    
      post{
