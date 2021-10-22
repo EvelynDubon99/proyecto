@@ -1,5 +1,4 @@
 def f_stage = ''
-def salcknotif = slackSend(channel: "jenkispipeline", message: "pipeline message")
 pipeline{
         agent any
             tools { 
@@ -89,12 +88,12 @@ pipeline{
                         steps{
                             script{
                                 try{
-                                    slackSend(channel: salcknotif.channelId, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}", timestamp: salcknotif.ts)
+                                    slackSend( channel: 'jenkispipeline', failOnError: true, message: 'Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}')
                                 }
                                 catch(Exception error)
                                 {
                                     currentBuild.result = "FAILURE"
-                                    slackSend(channel: salcknotif.channelId, message: "Build Failure: ${error} Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", timestamp: salcknotif.ts)
+                                    slackSend( channel: 'jenkispipeline', failOnError: true, message: 'Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}')
                                 }    
                                 
                             }
