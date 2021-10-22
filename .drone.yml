@@ -139,7 +139,7 @@ steps:
   when:
     branch:
       - master
-      
+
 - name: slack
   image: plugins/slack
   settings:
@@ -148,7 +148,7 @@ steps:
   when:
     status: [ success, failure ]
 
-      - name: notify
+- name: notify
   image: drillster/drone-email
   settings:
     from: dubon181014@unis.edu.gt
