@@ -87,7 +87,7 @@ pipeline{
      post{
                     failure{
                     
-                    slackSend(channel: salcknotif.channelId, color: '#ff0000' ,failOnError: true, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}")
+                    slackSend(channel: salcknotif.channelId, color: '#ff0000', failOnError: true, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}")
                    
                     mail bcc: '',
                                body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", 
