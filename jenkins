@@ -85,14 +85,21 @@ pipeline{
                 }
     }    
      post{
+                    success {
+                     slackSend(channel: "jenkispipeline", color: '#008f39', message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}")
+                    }    
                     failure{
                     
+                    slackSend(channel: "jenkispipeline", color: '#ff0000', failOnError: true, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}")
+                   
                     mail bcc: '',
                                body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", 
                                cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
                                to: 'jflores@unis.edu.gt'
+                               
+                    
                                
                     
                     }
