@@ -94,7 +94,7 @@ pipeline{
                                 catch(Exception error)
                                 {
                                     currentBuild.result = "FAILURE"
-                                    slackSend(channel: salcknotif.channelId, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", timestamp: salcknotif.ts)
+                                    slackSend(channel: salcknotif.channelId, message: "Build Failure: ${error} Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", timestamp: salcknotif.ts)
                                 }    
                                 
                             }
