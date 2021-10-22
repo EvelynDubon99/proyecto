@@ -139,6 +139,13 @@ steps:
   when:
     branch:
       - master
+- name: slack
+  image: plugins/slack
+  settings:
+    webhook: https://hooks.slack.com/services/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
+    channel: drone
+  when:
+    status: [ success, failure ]
 - name: notify
   image: drillster/drone-email
   settings:
