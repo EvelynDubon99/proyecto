@@ -84,35 +84,20 @@ pipeline{
                             }    
                        }
                 }
-
-                stage("slack"){
-                        steps{
-                            script{
-                                try{
-                                    slackSend( channel: salcknotif.channelId,  message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER}")
-                                }
-                                catch(Exception error)
-                                {
-                                    currentBuild.result = "FAILURE"
-                                    slackSend( channel: salcknotif.channelId, failOnError: true, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}")
-                                }    
-                                
-                            }
-
-                        }    
-
-
-                }
     }    
      post{
                     failure{
                     
+                    slackSend(channel: salcknotif.channelId, failOnError: true, message: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}")
+                   
                     mail bcc: '',
                                body: "Project: ${currentBuild.currentResult} Job: ${env.JOB_NAME} URL: ${env.BUILD_URL} Buil Number: ${env.BUILD_NUMBER} Fallo: ${f_stage}", 
                                cc: 'dubon181014@unis.edu.gt', 
                                from: '', replyTo: '',
                                subject: 'Pipeline fail', 
                                to: 'jflores@unis.edu.gt'
+                               
+                    
                                
                     
                     }
