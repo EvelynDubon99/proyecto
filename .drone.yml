@@ -1,4 +1,9 @@
+
 kind: pipeline
+type: docker
+platform:
+  os: linux
+  arch: amd64
 steps:
 - name: Unit testing
   image: maven:3-jdk-11
@@ -33,7 +38,7 @@ steps:
 - name: SonarQube
   image: maven:3-jdk-11
   commands: 
-  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://ancient-newt-7.loca.lt
+  - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://kind-horse-82.loca.lt
   when:
     event:
       include:
@@ -42,7 +47,7 @@ steps:
 - name: QualityGate
   image: maven:3-jdk-11
   commands:
-  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://ancient-newt-7.loca.lt
+  - mvn clean verify sonar:sonar sonar-quality-gate:check -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://kind-horse-82.loca.lt
   when:
     event:
       include:
@@ -79,20 +84,17 @@ steps:
       - dev
     event: 
       include: 
-
-      - push  
-      
+      - push        
 - name: Build-uat
   image: maven:3-jdk-11
   commands:
   - mvn -f pom.xml -Dspring.profiles.active=uat package
   when:
     branch:
-      - uat
+      -uat
     event: 
       include: 
-      - push 
-
+      - push  
 - name: Build-master
   image: maven:3-jdk-11
   commands:
@@ -103,7 +105,6 @@ steps:
     event: 
       include: 
       - push  
-
 - name: Server-dev
   image: alpine
   commands:
@@ -111,7 +112,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war dev.war
-    - curl -v -u admin:admin -T dev.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/dev&update=true'
+    - curl -v -u admin:admin -T dev.war 'https://c334-2800-98-1127-1117-18ce-f265-8fc8-f399.ngrok.io/manager/text/deploy?path=/dev&update=true'
   when:
     branch:
       - dev
@@ -125,14 +126,13 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war uat.war
-    - curl -v -u admin:admin -T uat.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/uat&update=true'
+    - curl -v -u admin:admin -T uat.war 'https://c334-2800-98-1127-1117-18ce-f265-8fc8-f399.ngrok.io/manager/text/deploy?path=/uat&update=true'
   when:
     branch:
       - uat
     event:
       include: 
       - push
-
 - name: Server-master
   image: alpine
   commands:
@@ -140,13 +140,10 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war rps.war
-    - curl -v -u admin:admin -T rps.war 'https://bbc3-2800-98-1127-1117-9962-9c9a-ee4d-b120.ngrok.io/manager/text/deploy?path=/rps&update=true'
+    - curl -v -u admin:admin -T rps.war 'https://c334-2800-98-1127-1117-18ce-f265-8fc8-f399.ngrok.io/manager/text/deploy?path=/rps&update=true'
   when:
     branch:
       - master
-    event:
-      include: 
-      - push
 
 - name: notify
   image: drillster/drone-email
@@ -172,3 +169,12 @@ steps:
     - dev
     - master
     - uat 
+
+- name: slack
+  image: plugins/slack
+  settings:
+    webhook: 
+      from_secret: slackweb
+    channel: drone
+  when:
+    status: [ success, failure ]
