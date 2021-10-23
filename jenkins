@@ -14,7 +14,11 @@ pipeline{
                                  echo "Repositorio"
                         }
 
-                         git 'https://github.com/EvelynDubon99/proyecto'
+
+
+                         git branch: 'uat', url: 'https://github.com/EvelynDubon99/proyecto'
+
+
                     }
                 }
                 stage('Build') {
@@ -23,7 +27,11 @@ pipeline{
                                 f_stage=env.STAGE_NAME
                                  echo "Build"
                         }
-                            sh 'mvn package'
+
+
+                            sh 'mvn -Dspring.profiles.active=dev package'
+
+
                             
                     }
 
@@ -34,7 +42,11 @@ pipeline{
                                  f_stage=env.STAGE_NAME
                                  echo "Unit testing"
                         }
-                            sh 'mvn test'
+
+
+                            sh 'mvn -Dspring.profiles.active=uat test'
+
+
                     }
                     
 
@@ -79,7 +91,11 @@ pipeline{
                             script {
                                 f_stage=env.STAGE_NAME
                                 echo "Servidor Tomcat"
-                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.20:8085/')], contextPath: 'master', war: '**/*.war'
+
+
+                               deploy adapters: [tomcat9(credentialsId: 'f8d88f4c-dd10-46d2-8c6a-b0f1a8ed4ddf', path: '', url: 'http://192.168.1.20:8085/')], contextPath: 'uat', war: '**/*.war'
+
+
                             }    
                        }
                 }
