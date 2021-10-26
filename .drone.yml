@@ -39,10 +39,11 @@ steps:
   image: maven:3-jdk-11
   commands: 
   - mvn clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=hola -Dsonar.host.url=https://chilly-warthog-33.loca.lt
-    event:
-      include:
-      - pull_request
- 
+    when:
+      event:
+        include:
+        - pull_request
+
 - name: QualityGate
   image: maven:3-jdk-11
   commands:
