@@ -29,7 +29,7 @@ pipeline{
                         }
 
 
-                            sh 'mvn -Dspring.profiles.active=dev package'
+                            sh 'mvn clean -Dspring.profiles.active=dev package'
 
 
                             
