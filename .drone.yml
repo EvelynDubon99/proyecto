@@ -143,6 +143,9 @@ steps:
   when:
     branch:
       - master
+    event: 
+      include: 
+      - push   
 
 - name: notify
   image: drillster/drone-email
