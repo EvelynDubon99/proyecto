@@ -83,7 +83,8 @@ steps:
       - dev
     event: 
       include: 
-      - push        
+      - push 
+      
 - name: Build-uat
   image: maven:3-jdk-11
   commands:
@@ -94,6 +95,7 @@ steps:
     event: 
       include: 
       - push  
+      
 - name: Build-master
   image: maven:3-jdk-11
   commands:
@@ -103,7 +105,8 @@ steps:
       - master
     event: 
       include: 
-      - push  
+      - push 
+      
 - name: Server-dev
   image: alpine
   commands:
