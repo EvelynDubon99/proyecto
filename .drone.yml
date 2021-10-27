@@ -114,7 +114,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war dev.war
-    - curl -v -u admin:admin -T dev.war 'https://c2cb-2800-98-1127-1117-5850-ab1e-8d2a-84b5.ngrok.io/manager/text/deploy?path=/dev&update=true'
+    - curl -v -u admin:admin -T dev.war 'https://9533-2800-98-1127-1117-5850-ab1e-8d2a-84b5.ngrok.io/manager/text/deploy?path=/dev&update=true'
   when:
     branch:
       - dev
@@ -128,7 +128,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war uat.war
-    - curl -v -u admin:admin -T uat.war 'https://c2cb-2800-98-1127-1117-5850-ab1e-8d2a-84b5.ngrok.io/manager/text/deploy?path=/uat&update=true'
+    - curl -v -u admin:admin -T uat.war 'https://9533-2800-98-1127-1117-5850-ab1e-8d2a-84b5.ngrok.io/manager/text/deploy?path=/uat&update=true'
   when:
     branch:
       - uat
@@ -142,7 +142,7 @@ steps:
     - apk add curl
     - stat ventas-0.0.1-SNAPSHOT.war
     - mv  ventas-0.0.1-SNAPSHOT.war rps.war
-    - curl -v -u admin:admin -T rps.war 'https://c2cb-2800-98-1127-1117-5850-ab1e-8d2a-84b5.ngrok.io/manager/text/deploy?path=/rps&update=true'
+    - curl -v -u admin:admin -T rps.war 'https://9533-2800-98-1127-1117-5850-ab1e-8d2a-84b5.ngrok.io/manager/text/deploy?path=/rps&update=true'
   when:
     branch:
       - master
