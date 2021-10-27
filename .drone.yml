@@ -90,10 +90,10 @@ steps:
   - mvn -f pom.xml -Dspring.profiles.active=uat package
   when:
     branch:
-      -uat
+      - uat
     event: 
       include: 
-      - push  
+      - push   
 - name: Build-master
   image: maven:3-jdk-11
   commands:
